@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATIVE CREW | Official Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* 無限スクロール：速度をわずかに落として視認性を向上 */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .slider-container {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            padding: 120px 0;
+        }
+
+        .slider-track {
+            display: flex;
+            align-items: center;
+            /* スピード：18秒（速すぎず遅すぎない絶妙な流れ） */
+            animation: scroll 18s linear infinite;
+            will-change: transform;
+            width: max-content;
+        }
+
+        .slider-container:hover .slider-track {
+            animation-play-state: paused;
+        }
+
+        .slide-item {
+            width: 260px; 
+            padding: 0 12px;
+            flex-shrink: 0;
+            /* 動きを「ヌルヌル」から「吸い付くような洗練された動き」へ (Expo Out) */
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        /* ホバー時の拡大サイズを適切に調整 (600px -> 460px) */
+        .slide-item:hover {
+            width: 460px; 
+        }
+
+        .artist-card {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            background: #0f0f0f;
+            /* 微細な枠線で高級感を演出 */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .artist-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide-item:hover img {
+            transform: scale(1.08);
+        }
+
+        /* 文字情報：ミニマルなデザインへ */
+        .artist-info {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .info-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            /* より深いグラデーション */
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 40%, transparent 100%);
+            z-index: 1;
+        }
+
+        .info-content {
+            position: relative;
+            z-index: 2;
+            transform: translateY(15px);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide-item:hover .artist-info {
+            opacity: 1;
+        }
+
+        .slide-item:hover .info-content {
+            transform: translateY(0);
+        }
+
+        .sns-link {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 15px;
+            margin-top: 8px;
+            letter-spacing: 0.1em;
+            transition: color 0.3s;
+            pointer-events: auto;
+        }
+
+        .sns-link:hover {
+            color: #fff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            color: transparent;
+        }
+
+        /* スタイリッシュな装飾ライン */
+        .accent-line {
+            width: 20px;
+            height: 1px;
+            background: #fff;
+            margin-bottom: 15px;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide-item:hover .accent-line {
+            width: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+            <div class="text-xl font-black tracking-[0.2em] uppercase">Crew.</div>
+            <div class="hidden md:flex space-x-12 text-[9px] font-bold tracking-[0.4em] uppercase opacity-60">
+                <a href="#hero" class="hover:opacity-100 transition">Top</a>
+                <a href="#members" class="hover:opacity-100 transition">Members</a>
+                <a href="#contact" class="hover:opacity-100 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="h-screen flex items-center justify-center relative px-6">
+        <div class="text-center z-10">
+            <h1 class="text-7xl md:text-[10rem] font-black mb-0 tracking-tighter leading-[0.85] italic uppercase">
+                Artistic<br><span class="text-outline">Impact.</span>
+            </h1>
+            <p class="mt-10 text-zinc-600 max-w-lg mx-auto text-[10px] tracking-[0.5em] uppercase font-bold">
+                Premium Creative Unit / Tokyo Based
+            </p>
+        </div>
+    </section>
+
+    <section id="members" class="py-24 bg-black overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 mb-12 flex flex-col">
+            <span class="text-zinc-800 text-xs font-bold uppercase tracking-[0.6em] mb-2">Portfolio</span>
+            <h2 class="text-5xl font-black uppercase tracking-tighter italic">Members</h2>
+        </div>
+
+        <div class="slider-container">
+            <div class="slider-track" id="sliderTrack">
+                <!-- JSでコンテンツ生成 -->
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-48 px-6 max-w-4xl mx-auto text-center">
+        <span class="text-[9px] font-bold tracking-[0.6em] text-zinc-700 block mb-12 uppercase">Inquiry</span>
+        <a href="mailto:contact@crew.xyz" class="text-3xl md:text-6xl font-black hover:text-zinc-500 transition italic uppercase tracking-tighter">
+            hello@crew.xyz
+        </a>
+    </section>
+
+    <footer class="py-20 px-6 text-center text-zinc-900 text-[8px] tracking-[0.6em] uppercase font-black">
+        <p>&copy; 2024 CREATIVE CREW.</p>
+    </footer>
+
+    <script>
+        const members = [
+            { 
+                name: "RYOMA", 
+                role: "Dancer / Choreographer", 
+                img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&h=800&q=80",
+                ig: "ryoma_official",
+                birthday: "1996.05.20"
+            },
+            { 
+                name: "HINA", 
+                role: "Dancer / Influencer", 
+                img: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&h=800&q=80",
+                ig: "hina_style",
+                birthday: "1999.02.14"
+            },
+            { 
+                name: "KENJI", 
+                role: "Editor / Photographer", 
+                img: "https://images.unsplash.com/photo-1492562080023-ab3dbdf5bb33?auto=format&fit=crop&w=800&h=800&q=80",
+                ig: "kenji_vsn",
+                birthday: "1994.10.05"
+            },
+            { 
+                name: "MIYU", 
+                role: "Dancer / Office Worker", 
+                img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&h=800&q=80",
+                ig: "miyu_dance",
+                birthday: "1997.08.30"
+            },
+            { 
+                name: "SHO", 
+                role: "Choreographer / Editor", 
+                img: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=800&h=800&q=80",
+                ig: "sho_cut",
+                birthday: "1995.12.12"
+            },
+            { 
+                name: "AOI", 
+                role: "Dancer / Photographer", 
+                img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&h=800&q=80",
+                ig: "aoi_frame",
+                birthday: "1998.01.25"
+            }
+        ];
+
+        const track = document.getElementById('sliderTrack');
+
+        function generateContent(data) {
+            data.forEach(member => {
+                const slide = document.createElement('div');
+                slide.className = 'slide-item';
+                slide.innerHTML = `
+                    <div class="artist-card">
+                        <img src="${member.img}" alt="${member.name}" loading="lazy">
+                        <div class="artist-info">
+                            <div class="info-bg"></div>
+                            <div class="info-content">
+                                <div class="accent-line"></div>
+                                <h3 class="text-4xl font-black italic tracking-tighter leading-none mb-2">${member.name}</h3>
+                                <p class="text-[9px] font-bold text-zinc-400 uppercase tracking-[0.3em] mb-5">${member.role}</p>
+                                
+                                <div class="flex items-center">
+                                    <a href="#" class="sns-link">INSTAGRAM</a>
+                                    <span class="text-[8px] text-zinc-600 tracking-widest font-bold uppercase">BORN ${member.birthday}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                track.appendChild(slide);
+            });
+        }
+
+        // 無限ループ用にデータを複製
+        generateContent(members);
+        generateContent(members);
+
+    </script>
+</body>
+</html>
