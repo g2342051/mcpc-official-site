@@ -1,0 +1,178 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #050505;
+    color: #ffffff;
+    overflow-x: hidden;
+    }
+
+/* 無限スクロール：速度を落とし、浮遊感を抑えて落ち着かせる */
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+    }
+
+.slider-container {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    padding: 120px 0;
+    }
+
+        .slider-track {
+            display: flex;
+            align-items: center;
+            /* スピード：22秒（少し重みを持たせる） */
+            animation: scroll 22s linear infinite;
+            will-change: transform;
+            width: max-content;
+        }
+
+        .slider-container:hover .slider-track {
+            animation-play-state: paused;
+        }
+
+        .slide-item {
+            width: 260px; 
+            padding: 0 10px;
+            flex-shrink: 0;
+            /* ヌルヌル感を抑えるため、時間を短縮し、よりダイレクトな曲線 (Quart Out) へ変更 */
+            transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+        }
+
+        /* ホバー時の拡大サイズ */
+        .slide-item:hover {
+            width: 440px; 
+        }
+
+        .artist-card {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            background: #0d0d0d;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .artist-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 画像の拡大もよりキレのある動きに */
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slide-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* 文字情報：表示の遅延をなくし、パッと出る印象に */
+        .artist-info {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 35px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .info-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 55%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+            z-index: 1;
+        }
+
+        .info-content {
+            position: relative;
+            z-index: 2;
+            transform: translateY(10px);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slide-item:hover .artist-info {
+            opacity: 1;
+        }
+
+        .slide-item:hover .info-content {
+            transform: translateY(0);
+        }
+
+        .sns-link {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 12px;
+            margin-top: 8px;
+            letter-spacing: 0.15em;
+            transition: color 0.2s;
+            pointer-events: auto;
+        }
+
+        .sns-link:hover {
+            color: #fff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.15);
+            color: transparent;
+        }
+
+        .accent-line {
+            width: 15px;
+            height: 2px;
+            background: #fff;
+            margin-bottom: 12px;
+            transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slide-item:hover .accent-line {
+            width: 30px;
+        }
+.viewmore-btn {
+  display: inline-block;
+  padding: 14px 48px;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.35em;
+  text-decoration: none;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ホバー演出 */
+.viewmore-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* 矢印を少し動かす */
+.viewmore-btn:hover::after {
+  transform: translateX(6px);
+}
+
+/* 矢印アニメ用 */
+.viewmore-btn::after {
+  content: "→";
+  position: absolute;
+  right: 24px;
+  transition: transform 0.35s ease;
+}
+
