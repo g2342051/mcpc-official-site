@@ -1,269 +1,273 @@
-    <!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MEMBERS | Creator Collective</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
-        <style>
-            :root {
-                --bg-color: #050505;
-                --accent: #ffffff;
-            }
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEMBERS | Creator Collective</title>
+    <!-- 外部ライブラリの読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --accent: #ffffff;
+        }
 
-            body {
-                background-color: var(--bg-color);
-                color: #fff;
-                font-family: 'Inter', sans-serif;
-                overflow: hidden;
-                margin: 0;
-                user-select: none;
-            }
+        body {
+            background-color: var(--bg-color);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            margin: 0;
+            user-select: none;
+        }
 
-            .members-section {
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                perspective: 2500px;
-                position: relative;
-            }
+        .members-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            perspective: 2500px;
+            position: relative;
+            background-color: #050505;
+        }
 
-            /* 3Dステージ */
-            .carousel-stage {
-                position: relative;
-                width: 100%;
-                height: 55vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transform-style: preserve-3d;
-            }
+        /* 3Dステージ */
+        .carousel-stage {
+            position: relative;
+            width: 100%;
+            height: 55vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+        }
 
-            .member-card {
-                position: absolute;
-                width: 340px;
-                aspect-ratio: 1 / 1;
-                transform-style: preserve-3d;
-                will-change: transform, opacity;
-            }
+        .member-card {
+            position: absolute;
+            width: 340px;
+            aspect-ratio: 1 / 1;
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+        }
 
-            .card-inner {
-                width: 100%;
-                height: 100%;
-                position: relative;
-                border-radius: 4px;
-                overflow: hidden;
-                box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-                background: #111;
-            }
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            background: #111;
+        }
 
-            .card-inner img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
+        .card-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-            /* メンバー情報：中央時のみ表示 */
-            .member-info {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                padding: 2.2rem;
-                background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
-                z-index: 10;
-                opacity: 0;
-                transform: translateY(30px);
-            }
+        /* メンバー情報：中央時のみ表示 */
+        .member-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2.2rem;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(30px);
+        }
 
-            .member-role {
-                font-size: 0.7rem;
-                letter-spacing: 0.4em;
-                text-transform: uppercase;
-                color: rgba(255,255,255,0.6);
-                margin-bottom: 0.5rem;
-                font-weight: 700;
-            }
+        .member-role {
+            font-size: 0.7rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
 
-            .member-name {
-                font-family: 'Oswald', sans-serif;
-                font-size: 2.8rem;
-                line-height: 0.85;
-                text-transform: uppercase;
-                letter-spacing: -0.01em;
-            }
+        .member-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.8rem;
+            line-height: 0.85;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+        }
 
-            .blur-overlay {
-                position: absolute;
-                inset: 0;
-                background: rgba(0,0,0,0.1);
-                backdrop-filter: blur(0px);
-                transition: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
-                z-index: 5;
-            }
+        .blur-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.1);
+            backdrop-filter: blur(0px);
+            transition: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+            z-index: 5;
+        }
 
-            /* サイドメンバーの状態 */
-            .is-not-center .blur-overlay {
-                backdrop-filter: blur(2px);
-                background: rgba(0,0,0,0.35);
-            }
+        /* サイドメンバーの状態 */
+        .is-not-center .blur-overlay {
+            backdrop-filter: blur(2px);
+            background: rgba(0,0,0,0.35);
+        }
 
-            .is-not-center img {
-                filter: brightness(0.65);
-            }
+        .is-not-center img {
+            filter: brightness(0.65);
+        }
 
-            /* コントロールパネル */
-            .controls-wrapper {
-                margin-top: 4rem;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 1.5rem;
-                z-index: 100;
-            }
+        /* コントロールパネル */
+        .controls-wrapper {
+            margin-top: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 100;
+        }
 
-            .nav-buttons {
-                display: flex;
-                align-items: center;
-                gap: 3rem;
-            }
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
 
-            .btn-nav {
-                background: none;
-                border: none;
-                color: rgba(255,255,255,0.4);
-                cursor: pointer;
-                transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+        .btn-nav {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-            .btn-nav:hover {
-                color: #fff;
-                transform: scale(1.1);
-            }
+        .btn-nav:hover {
+            color: #fff;
+            transform: scale(1.1);
+        }
 
-            .btn-play {
-                width: 64px;
-                height: 64px;
-                border-radius: 50%;
-                background: rgba(255,255,255,0.05);
-                border: 1px solid rgba(255,255,255,0.1);
-                color: #fff;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-            }
+        .btn-play {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
 
-            .btn-play:hover {
-                background: rgba(255,255,255,1);
-                color: #000;
-            }
+        .btn-play:hover {
+            background: rgba(255,255,255,1);
+            color: #000;
+            border-color: #fff;
+        }
 
-            .btn-play svg {
-                width: 24px;
-                height: 24px;
-                fill: currentColor;
-            }
+        .btn-play svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
 
-            /* オートプレイ プログレスバー */
-            .autoplay-progress {
-                width: 180px;
-                height: 2px;
-                background: rgba(255,255,255,0.1);
-                position: relative;
-                overflow: hidden;
-            }
+        /* オートプレイ プログレスバー */
+        .autoplay-progress {
+            width: 180px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
 
-            .autoplay-progress-fill {
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 100%;
-                width: 0%;
-                background: #fff;
-            }
+        .autoplay-progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: #fff;
+        }
 
-            .section-header {
-                position: absolute;
-                top: 8%;
-                left: 5%;
-                z-index: 100;
-            }
+        .section-header {
+            position: absolute;
+            top: 8%;
+            left: 5%;
+            z-index: 100;
+        }
 
-            .section-bg-title {
-                font-size: 15vw;
-                font-weight: 900;
-                line-height: 1;
-                margin: 0;
-                opacity: 0.02;
-                pointer-events: none;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                white-space: nowrap;
-                text-transform: uppercase;
-            }
+        .section-bg-title {
+            font-size: 15vw;
+            font-weight: 900;
+            line-height: 1;
+            margin: 0;
+            opacity: 0.02;
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
 
-            @media (max-width: 768px) {
-                .member-card { width: 280px; }
-                .member-name { font-size: 2rem; }
-                .nav-buttons { gap: 1.5rem; }
-            }
-        </style>
-    </head>
-    <body>
+        @media (max-width: 768px) {
+            .member-card { width: 280px; }
+            .member-name { font-size: 2rem; }
+            .nav-buttons { gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
 
-        <h1 class="section-bg-title">Collective</h1>
+    <h1 class="section-bg-title">Collective</h1>
 
-        <div class="members-section">
-            <div class="section-header">
-                <p class="text-[10px] tracking-[0.6em] mb-2 opacity-40 uppercase">Professional Talents</p>
-                <h2 class="text-4xl font-black italic tracking-tighter">MEMBERS</h2>
-            </div>
-
-            <div class="carousel-stage" id="stage">
-                <!-- JSで生成 -->
-            </div>
-
-            <div class="controls-wrapper">
-                <div class="nav-buttons">
-                    <!-- PREV -->
-                    <button class="btn-nav" id="prevBtn" title="Previous">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                    </button>
-
-                    <!-- PLAY/PAUSE -->
-                    <button class="btn-play" id="playBtn" title="Play / Pause">
-                        <div id="playIcon">
-                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
-                        <div id="pauseIcon" style="display: none;">
-                            <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                        </div>
-                    </button>
-
-                    <!-- NEXT -->
-                    <button class="btn-nav" id="nextBtn" title="Next">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                    </button>
-                </div>
-
-                <!-- Auto-play duration indicator -->
-                <div class="autoplay-progress">
-                    <div class="autoplay-progress-fill" id="progressFill"></div>
-                </div>
-            </div>
+    <div class="members-section">
+        <div class="section-header">
+            <p class="text-[10px] tracking-[0.6em] mb-2 opacity-40 uppercase">Professional Talents</p>
+            <h2 class="text-4xl font-black italic tracking-tighter">MEMBERS</h2>
         </div>
 
-        <script>
+        <div class="carousel-stage" id="stage">
+            <!-- JSで生成 -->
+        </div>
+
+        <div class="controls-wrapper">
+            <div class="nav-buttons">
+                <!-- PREV -->
+                <button class="btn-nav" id="prevBtn" title="Previous">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+
+                <!-- PLAY/PAUSE -->
+                <button class="btn-play" id="playBtn" title="Play / Pause">
+                    <div id="playIcon">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <div id="pauseIcon" style="display: none;">
+                        <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </div>
+                </button>
+
+                <!-- NEXT -->
+                <button class="btn-nav" id="nextBtn" title="Next">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+            </div>
+
+            <!-- Auto-play duration indicator -->
+            <div class="autoplay-progress">
+                <div class="autoplay-progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
             const MEMBERS = [
                 { name: "SHINJI TAKAGI", role: "Creative Director", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" },
                 { name: "EMILY WATANABE", role: "Art Director", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80" },
@@ -288,7 +292,6 @@
             
             let currentRotation = 0;
             let isPlaying = false;
-            let autoplayTimer = null;
             const AUTOPLAY_DURATION = 4000; // 4秒ごとに切り替え
 
             function init() {
@@ -351,7 +354,6 @@
                 });
             }
 
-            // ナビゲーション共通のリセット処理
             function handleManualTransition() {
                 if (isPlaying) {
                     resetAutoplay();
@@ -360,7 +362,6 @@
                 }
             }
 
-            // ナビゲーション関数
             function next() {
                 currentRotation -= angleStep;
                 update();
@@ -373,7 +374,6 @@
                 handleManualTransition();
             }
 
-            // オートプレイ制御
             function togglePlay() {
                 isPlaying = !isPlaying;
                 if (isPlaying) {
@@ -388,14 +388,13 @@
             }
 
             function startAutoplay() {
-                // バーのアニメーションを開始
                 gsap.set(progressFill, { width: "0%" });
                 gsap.to(progressFill, {
                     width: "100%",
                     duration: AUTOPLAY_DURATION / 1000,
                     ease: "none",
                     onComplete: () => {
-                        next(); // 次のメンバーへ
+                        next();
                     }
                 });
             }
@@ -410,7 +409,6 @@
                 startAutoplay();
             }
 
-            // イベントリスナー
             document.getElementById('nextBtn').addEventListener('click', next);
             document.getElementById('prevBtn').addEventListener('click', prev);
             playBtn.addEventListener('click', togglePlay);
@@ -418,6 +416,7 @@
             window.addEventListener('resize', () => update(true));
 
             init();
-        </script>
-    </body>
-    </html>
+        });
+    </script>
+</body>
+</html>
