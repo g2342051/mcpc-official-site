@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEMBERS | Creator Collective</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --accent-color: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            margin: 0;
+            user-select: none;
+        }
+
+        .members-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            perspective: 2500px;
+        }
+
+        .carousel-stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            cursor: grab;
+        }
+
+        .carousel-stage:active {
+            cursor: grabbing;
+        }
+
+        .member-card {
+            position: absolute;
+            width: 340px;
+            aspect-ratio: 1 / 1;
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            background: #111;
+        }
+
+        .card-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* メンバー情報：中央時のみ表示 */
+        .member-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(30px);
+            pointer-events: none;
+        }
+
+        .member-role {
+            font-size: 0.65rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .member-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.6rem;
+            line-height: 0.85;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+        }
+
+        .section-header {
+            position: absolute;
+            top: 8%;
+            left: 5%;
+            z-index: 100;
+        }
+
+        .section-bg-title {
+            font-size: 15vw;
+            font-weight: 900;
+            line-height: 1;
+            margin: 0;
+            opacity: 0.02;
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        .blur-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.1);
+            backdrop-filter: blur(0px);
+            transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+            z-index: 5;
+        }
+
+        /* サイドメンバー：顔を見せつつ少し暗く */
+        .is-not-center .blur-overlay {
+            backdrop-filter: blur(1px);
+            background: rgba(0,0,0,0.35);
+        }
+
+        .is-not-center img {
+            filter: brightness(0.7);
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 8%;
+            width: 240px;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+        .progress-fill {
+            height: 100%;
+            background: #fff;
+            width: 0%;
+        }
+
+        @media (max-width: 768px) {
+            .member-card {
+                width: 280px;
+            }
+            .member-name {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="section-bg-title">Collective</h1>
+
+    <div class="members-section">
+        <div class="section-header">
+            <p class="text-[10px] tracking-[0.6em] mb-2 opacity-40 uppercase">Professional Talents</p>
+            <h2 class="text-4xl font-black italic tracking-tighter">MEMBERS</h2>
+        </div>
+
+        <div class="carousel-stage" id="stage">
+            <!-- JS生成 -->
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+    </div>
+
+    <script>
+        const MEMBERS = [
+            { name: "SHINJI TAKAGI", role: "Creative Director", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" },
+            { name: "EMILY WATANABE", role: "Art Director", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80" },
+            { name: "KENJI SATO", role: "Motion Designer", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80" },
+            { name: "YUKI TANAKA", role: "Sound Designer", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80" },
+            { name: "MARCUS LEE", role: "Lead Developer", image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=800&q=80" },
+            { name: "SARA JONSON", role: "UI/UX Designer", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80" },
+            { name: "AKIRA ITO", role: "Photographer", image: "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=800&q=80" },
+            { name: "LISA CHEN", role: "Brand Stylist", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80" },
+            { name: "DAVID SMITH", role: "Copywriter", image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=800&q=80" },
+            { name: "HINA MORI", role: "Illustrator", image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80" }
+        ];
+
+        const stage = document.getElementById('stage');
+        const progressFill = document.getElementById('progress');
+        
+        const count = MEMBERS.length;
+        const angleStep = 360 / count;
+        let currentRotation = 0;
+
+        function init() {
+            MEMBERS.forEach((member, i) => {
+                const card = document.createElement('div');
+                card.className = 'member-card';
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="blur-overlay"></div>
+                        <img src="${member.image}" alt="${member.name}">
+                        <div class="member-info">
+                            <p class="member-role">${member.role}</p>
+                            <h3 class="member-name">${member.name.split(' ').join('<br>')}</h3>
+                        </div>
+                    </div>
+                `;
+                stage.appendChild(card);
+            });
+            update(true);
+        }
+
+        function update(immediate = false) {
+            const cards = document.querySelectorAll('.member-card');
+            const radius = window.innerWidth > 768 ? 750 : 550;
+
+            cards.forEach((card, i) => {
+                let cardAngle = (i * angleStep) + currentRotation;
+                let normalizedAngle = ((cardAngle + 180) % 360 + 360) % 360 - 180;
+                let radian = normalizedAngle * (Math.PI / 180);
+
+                const x = Math.sin(radian) * radius;
+                const z = Math.cos(radian) * radius - radius;
+                const rY = normalizedAngle * -1;
+
+                // 判定をよりシビアに設定
+                const distanceToCenter = Math.abs(normalizedAngle);
+                const isCenter = distanceToCenter < (angleStep / 4);
+                
+                const opacity = Math.max(0.1, 1 - Math.abs(normalizedAngle) / 85);
+                const scale = isCenter ? 1.15 : 0.8;
+
+                const duration = immediate ? 0 : 1.6;
+
+                gsap.to(card, {
+                    x: x,
+                    z: z,
+                    rotateY: rY,
+                    opacity: opacity,
+                    scale: scale,
+                    duration: duration,
+                    ease: "power4.out",
+                    overwrite: "auto"
+                });
+
+                // 情報の表示：中央時のみ
+                const info = card.querySelector('.member-info');
+                if (isCenter) {
+                    card.classList.remove('is-not-center');
+                    gsap.to(info, { 
+                        opacity: 1, 
+                        y: 0, 
+                        duration: 0.9, 
+                        delay: 0.3,
+                        ease: "power3.out" 
+                    });
+                } else {
+                    card.classList.add('is-not-center');
+                    gsap.to(info, { 
+                        opacity: 0, 
+                        y: 30, 
+                        duration: 0.5, 
+                        ease: "power2.in" 
+                    });
+                }
+            });
+
+            const progress = ((-currentRotation / 360) % 1 + 1) % 1;
+            gsap.to(progressFill, { width: `${progress * 100}%`, duration: 0.5 });
+        }
+
+        let startX = 0;
+        let isDragging = false;
+        let lastRotation = 0;
+
+        function handleStart(x) {
+            isDragging = true;
+            startX = x;
+            lastRotation = currentRotation;
+        }
+
+        function handleMove(x) {
+            if (!isDragging) return;
+            const deltaX = x - startX;
+            // 感度を極限まで下げ（0.015）、大きく動かさないと回らないように設定
+            const sensitivity = 0.015;
+            currentRotation = lastRotation + (deltaX * sensitivity);
+            update();
+        }
+
+        function handleEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            // 指を離した時、最も近い角度へ「重く」吸着
+            currentRotation = Math.round(currentRotation / angleStep) * angleStep;
+            update();
+        }
+
+        // Event Listeners
+        stage.addEventListener('mousedown', e => handleStart(e.pageX));
+        window.addEventListener('mousemove', e => handleMove(e.pageX));
+        window.addEventListener('mouseup', handleEnd);
+
+        stage.addEventListener('touchstart', e => handleStart(e.touches[0].pageX), {passive: true});
+        stage.addEventListener('touchmove', e => handleMove(e.touches[0].pageX), {passive: true});
+        stage.addEventListener('touchend', handleEnd);
+
+        // ホイール感度もさらに抑制
+        window.addEventListener('wheel', e => {
+            if (Math.abs(e.deltaY) > 50) {
+                const direction = e.deltaY > 0 ? -1 : 1;
+                currentRotation += direction * angleStep;
+                update();
+            }
+        }, { passive: true });
+
+        window.addEventListener('resize', () => update(true));
+
+        init();
+    </script>
+</body>
+</html>
