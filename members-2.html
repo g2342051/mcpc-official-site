@@ -10,12 +10,12 @@
     <style>
         :root {
             --bg-color: #050505;
-            --accent-color: #ffffff;
+            --accent: #ffffff;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--accent-color);
+            color: #fff;
             font-family: 'Inter', sans-serif;
             overflow: hidden;
             margin: 0;
@@ -29,21 +29,18 @@
             justify-content: center;
             align-items: center;
             perspective: 2500px;
+            position: relative;
         }
 
+        /* 3Dステージ */
         .carousel-stage {
             position: relative;
             width: 100%;
-            height: 100%;
+            height: 55vh;
             display: flex;
             align-items: center;
             justify-content: center;
             transform-style: preserve-3d;
-            cursor: grab;
-        }
-
-        .carousel-stage:active {
-            cursor: grabbing;
         }
 
         .member-card {
@@ -60,7 +57,7 @@
             position: relative;
             border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
             background: #111;
         }
 
@@ -76,16 +73,15 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            padding: 2rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+            padding: 2.2rem;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
             z-index: 10;
             opacity: 0;
             transform: translateY(30px);
-            pointer-events: none;
         }
 
         .member-role {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             letter-spacing: 0.4em;
             text-transform: uppercase;
             color: rgba(255,255,255,0.6);
@@ -95,10 +91,103 @@
 
         .member-name {
             font-family: 'Oswald', sans-serif;
-            font-size: 2.6rem;
+            font-size: 2.8rem;
             line-height: 0.85;
             text-transform: uppercase;
             letter-spacing: -0.01em;
+        }
+
+        .blur-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.1);
+            backdrop-filter: blur(0px);
+            transition: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+            z-index: 5;
+        }
+
+        /* サイドメンバーの状態 */
+        .is-not-center .blur-overlay {
+            backdrop-filter: blur(2px);
+            background: rgba(0,0,0,0.35);
+        }
+
+        .is-not-center img {
+            filter: brightness(0.65);
+        }
+
+        /* コントロールパネル */
+        .controls-wrapper {
+            margin-top: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 100;
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .btn-nav {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-nav:hover {
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .btn-play {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .btn-play:hover {
+            background: rgba(255,255,255,1);
+            color: #000;
+        }
+
+        .btn-play svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* オートプレイ プログレスバー */
+        .autoplay-progress {
+            width: 180px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .autoplay-progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: #fff;
         }
 
         .section-header {
@@ -123,45 +212,10 @@
             text-transform: uppercase;
         }
 
-        .blur-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.1);
-            backdrop-filter: blur(0px);
-            transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
-            z-index: 5;
-        }
-
-        /* サイドメンバー：顔を見せつつ少し暗く */
-        .is-not-center .blur-overlay {
-            backdrop-filter: blur(1px);
-            background: rgba(0,0,0,0.35);
-        }
-
-        .is-not-center img {
-            filter: brightness(0.7);
-        }
-
-        .progress-bar {
-            position: absolute;
-            bottom: 8%;
-            width: 240px;
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-        }
-        .progress-fill {
-            height: 100%;
-            background: #fff;
-            width: 0%;
-        }
-
         @media (max-width: 768px) {
-            .member-card {
-                width: 280px;
-            }
-            .member-name {
-                font-size: 2rem;
-            }
+            .member-card { width: 280px; }
+            .member-name { font-size: 2rem; }
+            .nav-buttons { gap: 1.5rem; }
         }
     </style>
 </head>
@@ -176,11 +230,36 @@
         </div>
 
         <div class="carousel-stage" id="stage">
-            <!-- JS生成 -->
+            <!-- JSで生成 -->
         </div>
 
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress"></div>
+        <div class="controls-wrapper">
+            <div class="nav-buttons">
+                <!-- PREV -->
+                <button class="btn-nav" id="prevBtn" title="Previous">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+
+                <!-- PLAY/PAUSE -->
+                <button class="btn-play" id="playBtn" title="Play / Pause">
+                    <div id="playIcon">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <div id="pauseIcon" style="display: none;">
+                        <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </div>
+                </button>
+
+                <!-- NEXT -->
+                <button class="btn-nav" id="nextBtn" title="Next">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+            </div>
+
+            <!-- Auto-play duration indicator -->
+            <div class="autoplay-progress">
+                <div class="autoplay-progress-fill" id="progressFill"></div>
+            </div>
         </div>
     </div>
 
@@ -199,11 +278,18 @@
         ];
 
         const stage = document.getElementById('stage');
-        const progressFill = document.getElementById('progress');
+        const progressFill = document.getElementById('progressFill');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
         
         const count = MEMBERS.length;
         const angleStep = 360 / count;
+        
         let currentRotation = 0;
+        let isPlaying = false;
+        let autoplayTimer = null;
+        const AUTOPLAY_DURATION = 4000; // 4秒ごとに切り替え
 
         function init() {
             MEMBERS.forEach((member, i) => {
@@ -237,14 +323,11 @@
                 const z = Math.cos(radian) * radius - radius;
                 const rY = normalizedAngle * -1;
 
-                // 判定をよりシビアに設定
                 const distanceToCenter = Math.abs(normalizedAngle);
                 const isCenter = distanceToCenter < (angleStep / 4);
                 
                 const opacity = Math.max(0.1, 1 - Math.abs(normalizedAngle) / 85);
                 const scale = isCenter ? 1.15 : 0.8;
-
-                const duration = immediate ? 0 : 1.6;
 
                 gsap.to(card, {
                     x: x,
@@ -252,81 +335,85 @@
                     rotateY: rY,
                     opacity: opacity,
                     scale: scale,
-                    duration: duration,
+                    duration: immediate ? 0 : 1.6,
                     ease: "power4.out",
                     overwrite: "auto"
                 });
 
-                // 情報の表示：中央時のみ
                 const info = card.querySelector('.member-info');
                 if (isCenter) {
                     card.classList.remove('is-not-center');
-                    gsap.to(info, { 
-                        opacity: 1, 
-                        y: 0, 
-                        duration: 0.9, 
-                        delay: 0.3,
-                        ease: "power3.out" 
-                    });
+                    gsap.to(info, { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: "power2.out" });
                 } else {
                     card.classList.add('is-not-center');
-                    gsap.to(info, { 
-                        opacity: 0, 
-                        y: 30, 
-                        duration: 0.5, 
-                        ease: "power2.in" 
-                    });
+                    gsap.to(info, { opacity: 0, y: 30, duration: 0.5, ease: "power2.in" });
                 }
             });
-
-            const progress = ((-currentRotation / 360) % 1 + 1) % 1;
-            gsap.to(progressFill, { width: `${progress * 100}%`, duration: 0.5 });
         }
 
-        let startX = 0;
-        let isDragging = false;
-        let lastRotation = 0;
-
-        function handleStart(x) {
-            isDragging = true;
-            startX = x;
-            lastRotation = currentRotation;
-        }
-
-        function handleMove(x) {
-            if (!isDragging) return;
-            const deltaX = x - startX;
-            // 感度を極限まで下げ（0.015）、大きく動かさないと回らないように設定
-            const sensitivity = 0.015;
-            currentRotation = lastRotation + (deltaX * sensitivity);
-            update();
-        }
-
-        function handleEnd() {
-            if (!isDragging) return;
-            isDragging = false;
-            // 指を離した時、最も近い角度へ「重く」吸着
-            currentRotation = Math.round(currentRotation / angleStep) * angleStep;
-            update();
-        }
-
-        // Event Listeners
-        stage.addEventListener('mousedown', e => handleStart(e.pageX));
-        window.addEventListener('mousemove', e => handleMove(e.pageX));
-        window.addEventListener('mouseup', handleEnd);
-
-        stage.addEventListener('touchstart', e => handleStart(e.touches[0].pageX), {passive: true});
-        stage.addEventListener('touchmove', e => handleMove(e.touches[0].pageX), {passive: true});
-        stage.addEventListener('touchend', handleEnd);
-
-        // ホイール感度もさらに抑制
-        window.addEventListener('wheel', e => {
-            if (Math.abs(e.deltaY) > 50) {
-                const direction = e.deltaY > 0 ? -1 : 1;
-                currentRotation += direction * angleStep;
-                update();
+        // ナビゲーション共通のリセット処理
+        function handleManualTransition() {
+            if (isPlaying) {
+                resetAutoplay();
+            } else {
+                stopAutoplay();
             }
-        }, { passive: true });
+        }
+
+        // ナビゲーション関数
+        function next() {
+            currentRotation -= angleStep;
+            update();
+            handleManualTransition();
+        }
+
+        function prev() {
+            currentRotation += angleStep;
+            update();
+            handleManualTransition();
+        }
+
+        // オートプレイ制御
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                startAutoplay();
+            } else {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                stopAutoplay();
+            }
+        }
+
+        function startAutoplay() {
+            // バーのアニメーションを開始
+            gsap.set(progressFill, { width: "0%" });
+            gsap.to(progressFill, {
+                width: "100%",
+                duration: AUTOPLAY_DURATION / 1000,
+                ease: "none",
+                onComplete: () => {
+                    next(); // 次のメンバーへ
+                }
+            });
+        }
+
+        function stopAutoplay() {
+            gsap.killTweensOf(progressFill);
+            gsap.to(progressFill, { width: "0%", duration: 0.2 });
+        }
+
+        function resetAutoplay() {
+            gsap.killTweensOf(progressFill);
+            startAutoplay();
+        }
+
+        // イベントリスナー
+        document.getElementById('nextBtn').addEventListener('click', next);
+        document.getElementById('prevBtn').addEventListener('click', prev);
+        playBtn.addEventListener('click', togglePlay);
 
         window.addEventListener('resize', () => update(true));
 
