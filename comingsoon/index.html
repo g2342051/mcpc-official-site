@@ -36,20 +36,50 @@
             text-transform: lowercase;
         }
 
-        /* Loading */
+        /* Loading - Custom Split Animation */
         #loader {
             position: fixed;
             inset: 0;
-            background: var(--brand-white);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .loader-panel {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: var(--brand-black);
+            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        #panel-top { top: 0; }
+        #panel-bottom { bottom: 0; }
+
+        #logo-container {
+            position: fixed;
+            inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 100;
+            z-index: 110;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            pointer-events: none;
         }
 
-        #logo-container {
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
+        /* Center Line Animation */
+        #loader-line {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--brand-white);
+            z-index: 120;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
         }
 
         /* Typing Cursor - Thin */
@@ -73,27 +103,30 @@
             0% { transform: translateY(0); }
             100% { transform: translateY(-50%); }
         }
-
         @keyframes scroll-down {
             0% { transform: translateY(-50%); }
             100% { transform: translateY(0); }
         }
-
-        .animate-scroll-up {
-            animation: scroll-up 30s linear infinite;
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes scroll-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
         }
 
-        .animate-scroll-down {
-            animation: scroll-down 30s linear infinite;
-        }
+        .animate-v-up { animation: scroll-up 30s linear infinite; }
+        .animate-v-down { animation: scroll-down 30s linear infinite; }
+        .animate-h-left { animation: scroll-left 25s linear infinite; }
+        .animate-h-right { animation: scroll-right 25s linear infinite; }
 
-        /* Transitions */
         .slide-transition {
             transition: all 1.2s cubic-bezier(0.85, 0, 0.15, 1);
         }
 
         .fade-in {
-            animation: fadeIn 1s forwards;
+            animation: fadeIn 1.2s forwards;
         }
 
         @keyframes fadeIn {
@@ -101,7 +134,6 @@
             to { opacity: 1; }
         }
 
-        /* Road Signs Elements */
         .road-label {
             background: var(--brand-black);
             color: white;
@@ -113,23 +145,27 @@
             transform: skewX(-10deg);
         }
 
-        /* Stream Masking */
         #right-section {
             mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
             -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
         }
-
-        .artist-card {
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        @media (max-width: 767px) {
+            #right-section {
+                mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+                -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            }
         }
     </style>
 </head>
 <body class="antialiased select-none">
 
-    <!-- Phase 0: Loading Overlay -->
+    <!-- Phase 0: Loading Animation Area -->
     <div id="loader">
+        <div id="panel-top" class="loader-panel"></div>
+        <div id="panel-bottom" class="loader-panel"></div>
+        <div id="loader-line"></div>
         <div id="logo-container">
-            <div class="brand-logo-text text-6xl md:text-8xl">mcpc</div>
+            <div class="brand-logo-text text-white text-6xl md:text-8xl">mcpc</div>
         </div>
     </div>
 
@@ -145,7 +181,7 @@
                     <div class="brand-logo-text text-7xl md:text-[10rem]">mcpc</div>
                 </div>
 
-                <!-- Typing Area with Break Support -->
+                <!-- Typing Area -->
                 <div id="typing-area" class="mono text-lg md:text-2xl py-4 md:py-6 min-h-[4em] md:min-h-[5em] flex flex-col items-center slide-transition">
                     <div id="line-1" class="h-[1.2em]"></div>
                     <div id="line-2" class="h-[1.2em] flex items-center">
@@ -165,12 +201,12 @@
                     </div>
                 </div>
 
-                <!-- SNS & Footer (Shown in Phase 3) -->
+                <!-- SNS & Footer (Shown after click) -->
                 <div id="footer-content" class="hidden opacity-0 mt-8 md:mt-16 text-left">
                     <div class="flex space-x-6 md:space-x-8 mb-6 md:mb-8 font-black text-xs md:text-sm tracking-tighter italic">
-                        <a href="#" class="hover:text-red-600 transition-colors border-b-2 border-black hover:border-red-600">INSTAGRAM</a>
-                        <a href="#" class="hover:text-red-600 transition-colors border-b-2 border-black hover:border-red-600">YOUTUBE</a>
-                        <a href="#" class="hover:text-red-600 transition-colors border-b-2 border-black hover:border-red-600">TIKTOK</a>
+                        <a href="#" class="hover:text-red-600 transition-colors border-b-2 border-black hover:border-red-600 uppercase">Instagram</a>
+                        <a href="#" class="hover:text-red-600 transition-colors border-b-2 border-black hover:border-red-600 uppercase">YouTube</a>
+                        <a href="#" class="hover:text-red-600 transition-colors border-b-2 border-black hover:border-red-600 uppercase">TikTok</a>
                     </div>
                     <div class="flex items-center text-[9px] md:text-[10px] font-black tracking-widest text-gray-400 uppercase">
                         <span class="text-red-600">STAY TUNED</span>
@@ -181,24 +217,16 @@
             </div>
         </div>
 
-        <!-- Right Section: 2-Column Auto Slideshow -->
-        <div id="right-section" class="w-full md:w-0 h-0 md:h-full bg-white relative flex opacity-0 slide-transition overflow-hidden">
-            <!-- Column 1 (Upwards) -->
-            <div class="w-1/2 h-full relative overflow-hidden">
-                <div id="col-up" class="flex flex-col gap-3 md:gap-4 p-3 md:p-4 animate-scroll-up">
-                    <!-- Images will be injected -->
-                </div>
+        <!-- Right Section: Auto Slideshow -->
+        <div id="right-section" class="w-full md:w-0 h-0 md:h-full bg-white relative flex flex-col md:flex-row opacity-0 slide-transition overflow-hidden">
+            <div class="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden flex md:block">
+                <div id="col-up" class="flex md:flex-col gap-3 md:gap-4 p-3 md:p-4 whitespace-nowrap md:whitespace-normal"></div>
             </div>
-            <!-- Column 2 (Downwards) -->
-            <div class="w-1/2 h-full relative overflow-hidden">
-                <div id="col-down" class="flex flex-col gap-3 md:gap-4 p-3 md:p-4 animate-scroll-down">
-                    <!-- Images will be injected -->
-                </div>
+            <div class="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden flex md:block">
+                <div id="col-down" class="flex md:flex-col gap-3 md:gap-4 p-3 md:p-4 whitespace-nowrap md:whitespace-normal"></div>
             </div>
-
-            <!-- Road Line Accents -->
-            <div class="absolute left-0 top-0 w-[2px] h-full bg-black/10"></div>
-            <div class="absolute left-1/2 top-0 w-[1px] h-full bg-black/5"></div>
+            <div class="absolute left-0 top-0 w-full md:w-[2px] h-[1px] md:h-full bg-black/10"></div>
+            <div class="absolute left-0 md:left-1/2 top-1/2 md:top-0 w-full md:w-[1px] h-[1px] md:h-full bg-black/5"></div>
         </div>
 
         <!-- Background Decor -->
@@ -223,8 +251,10 @@
         };
 
         const elements = {
-            loader: document.getElementById('loader'),
             logo: document.getElementById('logo-container'),
+            line: document.getElementById('loader-line'),
+            panelTop: document.getElementById('panel-top'),
+            panelBottom: document.getElementById('panel-bottom'),
             leftSection: document.getElementById('left-section'),
             copyWrapper: document.getElementById('copy-wrapper'),
             rightSection: document.getElementById('right-section'),
@@ -242,7 +272,7 @@
 
         let currentPhase = 0;
 
-        async function typeWriter(element, text, speed = 60) {
+        async function typeWriter(element, text, speed = 100) {
             for (let i = 0; i < text.length; i++) {
                 element.textContent += text.charAt(i);
                 await new Promise(r => setTimeout(r, speed));
@@ -250,15 +280,26 @@
         }
 
         async function init() {
-            // Phase 0: Logo Fade In/Out
-            setTimeout(() => elements.logo.style.opacity = '1', 100);
-            setTimeout(() => elements.logo.style.opacity = '0', 1000);
+            // 1. Logo Fade In
+            await new Promise(r => setTimeout(r, 400));
+            elements.logo.style.opacity = '1';
 
-            setTimeout(() => {
-                elements.loader.style.transition = 'transform 0.8s cubic-bezier(0.85, 0, 0.15, 1)';
-                elements.loader.style.transform = 'translateY(-100%)';
-                startPhase1();
-            }, 1500);
+            // 2. Logo Fade Out
+            await new Promise(r => setTimeout(r, 2000));
+            elements.logo.style.opacity = '0';
+
+            // 3. Line Trace (Left to Right)
+            await new Promise(r => setTimeout(r, 800));
+            elements.line.style.transform = 'scaleX(1)';
+
+            // 4. Split Open
+            await new Promise(r => setTimeout(r, 700));
+            elements.line.style.opacity = '0'; // Hide line as it splits
+            elements.panelTop.style.transform = 'translateY(-100%)';
+            elements.panelBottom.style.transform = 'translateY(100%)';
+
+            // Start Main Phase after split
+            setTimeout(() => startPhase1(), 400);
         }
 
         async function startPhase1() {
@@ -266,13 +307,11 @@
             elements.heroTitle.style.opacity = '1';
             elements.roadDecor.style.opacity = '1';
             
-            await new Promise(r => setTimeout(r, 600));
+            await new Promise(r => setTimeout(r, 1000));
             
-            // First line
             await typeWriter(elements.line1, CONFIG.line1);
-            await new Promise(r => setTimeout(r, 300));
+            await new Promise(r => setTimeout(r, 500));
             
-            // Second line with cursor
             elements.cursor.classList.remove('hidden');
             await typeWriter(elements.line2, CONFIG.line2);
             
@@ -284,16 +323,16 @@
 
         function createCard(item, index) {
             const card = document.createElement('div');
-            card.className = 'artist-card w-full aspect-[4/5] bg-gray-100 overflow-hidden relative group shadow-lg';
+            card.className = 'artist-card flex-shrink-0 w-[40vw] md:w-full aspect-[4/5] bg-gray-100 overflow-hidden relative group shadow-lg';
             card.innerHTML = `
                 <img src="${item.src}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                    <div class="text-white font-black text-xl md:text-2xl italic tracking-tighter transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <div class="text-white font-black text-lg md:text-2xl italic tracking-tighter transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                         ${item.name}
                     </div>
                 </div>
                 <div class="absolute top-2 left-2 flex flex-col">
-                    <span class="text-[7px] md:text-[8px] text-white font-black mono bg-red-600 px-1 italic">UNIT-${String(index + 1).padStart(2, '0')}</span>
+                    <span class="text-[6px] md:text-[8px] text-white font-black mono bg-red-600 px-1 italic uppercase">Unit-${String(index + 1).padStart(2, '0')}</span>
                 </div>
             `;
             return card;
@@ -303,39 +342,41 @@
             if (currentPhase !== 1) return;
             currentPhase = 3;
 
-            // Transition Layout: Center to Left/Top
+            const isMobile = window.innerWidth < 768;
+
             elements.leftSection.classList.remove('items-center', 'text-center');
             elements.leftSection.classList.add('md:w-1/2', 'items-start', 'text-left');
-            // Height adjustment for mobile
             elements.leftSection.classList.remove('h-full');
-            elements.leftSection.classList.add('h-[45vh]', 'md:h-full');
+            elements.leftSection.classList.add('h-[40vh]', 'md:h-full');
             
             elements.copyWrapper.classList.remove('text-center');
             elements.copyWrapper.classList.add('text-left');
-
-            // Adjust typing alignment
             elements.typingArea.classList.remove('items-center');
             elements.typingArea.classList.add('items-start');
 
             elements.enterPrompt.style.display = 'none';
-
-            // Show SNS/Footer
             elements.footerContent.classList.remove('hidden');
             elements.footerContent.classList.add('fade-in');
 
-            // Show Right Section (Bottom on mobile, Right on desktop)
             elements.rightSection.classList.remove('md:w-0', 'h-0');
-            elements.rightSection.classList.add('md:w-1/2', 'h-[55vh]', 'md:h-full', 'opacity-100');
+            elements.rightSection.classList.add('md:w-1/2', 'h-[60vh]', 'md:h-full', 'opacity-100');
             
-            setupSlideshow();
+            setupSlideshow(isMobile);
         }
 
-        function setupSlideshow() {
-            // Duplicate images for infinite scroll effect
+        function setupSlideshow(isMobile) {
             const listA = [...CONFIG.images, ...CONFIG.images, ...CONFIG.images];
             const listB = [...CONFIG.images].reverse();
             const listBFinal = [...listB, ...listB, ...listB];
             
+            if (isMobile) {
+                elements.colUp.classList.add('animate-h-left');
+                elements.colDown.classList.add('animate-h-right');
+            } else {
+                elements.colUp.classList.add('animate-v-up');
+                elements.colDown.classList.add('animate-v-down');
+            }
+
             listA.forEach((item, idx) => {
                 elements.colUp.appendChild(createCard(item, idx % CONFIG.images.length));
             });
