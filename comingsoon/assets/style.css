@@ -10,6 +10,12 @@ body{
   color: var(--black);
 }
 
+h1, h2 {
+  margin: 0;
+  line-height: 1.1; /* 見出しは詰め気味が映える */
+}
+
+
 /* ===== HERO ===== */
 .hero{
   min-height: 100vh;
@@ -56,6 +62,12 @@ body{
   list-style: none;
 }
 
+.social-links a{
+  color: var(--red);
+  text-decoration: none;
+  font-size: 20px;
+  text-align: center;}
+
 .hero-image img{
   width: 200px;
   max-width: 70vw;
@@ -71,6 +83,7 @@ body{
 .comingsoon-logo{
   width: 120px;
   opacity: 0.9;
+  color: var(--black);
 }
 
 /* ===== CONTENT ===== */
@@ -79,5 +92,34 @@ body{
   min-height: 100vh;
   position: relative;
   display: grid;
-  grid-template-rows: auto 1fr auto; /* header / logo / arrow */
+  grid-template-columns: 1fr 1fr;
+}
+
+.comingsoon-container {
+  background-color: var(--red);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.comingsoon-container h1 {
+  color: var(--black);
+  font-size: 54px;
+  margin-top: 10px;
+}
+
+.comingsoon-container h2 {
+  color: var(--black);
+  font-size: 70px;
+  margin-top:150px;
+}
+
+.comingsoon-text {
+  color: var(--black);
+  font-size: 18px;
+  font-weight: 400;
+  padding: 0 0 20 0;
+  line-height: 2;
 }
