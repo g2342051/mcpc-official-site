@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mcpc official site | Coming Soon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-red: #ff0000;
+            --brand-white: #ffffff;
+            --brand-black: #000000;
+        }
+
+        body {
+            background-color: var(--brand-white);
+            color: var(--brand-black);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Logo Style (Red text, italic, lowercase) */
+        .brand-logo-text {
+            color: var(--brand-red);
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: -0.05em;
+            line-height: 0.8;
+            text-transform: lowercase;
+        }
+
+        /* Loading - Custom Split Animation */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .loader-panel {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: var(--brand-black);
+            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        #panel-top { top: 0; }
+        #panel-bottom { bottom: 0; }
+
+        #logo-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 110;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            pointer-events: none;
+        }
+
+        /* Center Line Animation */
+        #loader-line {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--brand-white);
+            z-index: 120;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        /* Typing Cursor - Thin */
+        .cursor {
+            display: inline-block;
+            width: 1.5px;
+            height: 1.1em;
+            background: var(--brand-black);
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Automatic Slideshow Animations */
+        @keyframes scroll-up {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        @keyframes scroll-down {
+            0% { transform: translateY(-50%); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes scroll-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        .animate-v-up { animation: scroll-up 30s linear infinite; }
+        .animate-v-down { animation: scroll-down 30s linear infinite; }
+        .animate-h-left { animation: scroll-left 25s linear infinite; }
+        .animate-h-right { animation: scroll-right 25s linear infinite; }
+
+        .slide-transition {
+            transition: all 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        .fade-in {
+            animation: fadeIn 1.2s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .road-label {
+            background: var(--brand-black);
+            color: white;
+            padding: 2px 10px;
+            font-weight: 900;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            transform: skewX(-10deg);
+        }
+
+        #right-section {
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+        }
+        @media (max-width: 767px) {
+            #right-section {
+                mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+                -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased select-none">
+
+    <!-- Phase 0: Loading Animation Area -->
+    <div id="loader">
+        <div id="panel-top" class="loader-panel"></div>
+        <div id="panel-bottom" class="loader-panel"></div>
+        <div id="loader-line"></div>
+        <div id="logo-container">
+            <div class="brand-logo-text text-white text-6xl md:text-8xl">mcpc</div>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <main class="relative h-screen w-full flex flex-col md:flex-row overflow-hidden">
+        
+        <!-- Left Section: Copy & Info -->
+        <div id="left-section" class="w-full h-full md:h-full flex flex-col justify-center items-center text-center px-6 md:px-20 slide-transition z-20 bg-white">
+            <div id="copy-wrapper" class="max-w-xl w-full slide-transition text-center">
+                
+                <div id="hero-title" class="opacity-0 transition-opacity duration-1000 mb-4 md:mb-6">
+                    <div class="road-label mb-4 md:mb-6">OFFICIAL SITE</div>
+                    <div class="brand-logo-text text-7xl md:text-[10rem]">mcpc</div>
+                </div>
+
+                <!-- Typing Area -->
+                <div id="typing-area" class="mono text-lg md:text-2xl py-4 md:py-6 min-h-[4em] md:min-h-[5em] flex flex-col items-center slide-transition">
+                    <div id="line-1" class="h-[1.2em]"></div>
+                    <div id="line-2" class="h-[1.2em] flex items-center">
+                        <span id="line-2-content"></span>
+                        <span id="main-cursor" class="cursor hidden"></span>
+                    </div>
+                </div>
+
+                <div id="enter-prompt" class="opacity-0 mt-8 md:mt-12 cursor-pointer group">
+                    <div class="text-[10px] md:text-xs font-bold tracking-[0.5em] uppercase text-gray-400 group-hover:text-red-600 transition-colors">
+                        Tap anywhere to enter
+                    </div>
+                    <div class="flex justify-center mt-4 md:mt-6 space-x-2">
+                        <div class="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce"></div>
+                        <div class="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                        <div class="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                    </div>
+                </div>
+
+                <!-- SNS & Footer (Shown after click) -->
+                <div id="footer-content" class="hidden opacity-0 mt-8 md:mt-16 text-left">
+                    <div class="flex space-x-6 md:space-x-8 mb-6 md:mb-8 font-black text-xs md:text-sm tracking-tighter italic">
+                        <a href="#" class="hover:text-red-600 transition-colors border-b-2 border-black hover:border-red-600 uppercase">Instagram</a>
+                        <a href="#" class="hover:text-red-600 transition-colors border-b-2 border-black hover:border-red-600 uppercase">YouTube</a>
+                        <a href="#" class="hover:text-red-600 transition-colors border-b-2 border-black hover:border-red-600 uppercase">TikTok</a>
+                    </div>
+                    <div class="flex items-center text-[9px] md:text-[10px] font-black tracking-widest text-gray-400 uppercase">
+                        <span class="text-red-600">STAY TUNED</span>
+                        <div class="w-12 md:w-16 h-[1px] bg-gray-200 ml-3 md:ml-4"></div>
+                        <span class="ml-3 md:ml-4">2026 OFFICIAL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section: Auto Slideshow -->
+        <div id="right-section" class="w-full md:w-0 h-0 md:h-full bg-white relative flex flex-col md:flex-row opacity-0 slide-transition overflow-hidden">
+            <div class="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden flex md:block">
+                <div id="col-up" class="flex md:flex-col gap-3 md:gap-4 p-3 md:p-4 whitespace-nowrap md:whitespace-normal"></div>
+            </div>
+            <div class="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden flex md:block">
+                <div id="col-down" class="flex md:flex-col gap-3 md:gap-4 p-3 md:p-4 whitespace-nowrap md:whitespace-normal"></div>
+            </div>
+            <div class="absolute left-0 top-0 w-full md:w-[2px] h-[1px] md:h-full bg-black/10"></div>
+            <div class="absolute left-0 md:left-1/2 top-1/2 md:top-0 w-full md:w-[1px] h-[1px] md:h-full bg-black/5"></div>
+        </div>
+
+        <!-- Background Decor -->
+        <div id="road-decor" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-1000 pointer-events-none z-0">
+            <div class="text-[30vw] md:text-[20vw] font-black text-black/[0.03] italic select-none">MCPC</div>
+        </div>
+
+    </main>
+
+    <script>
+        const CONFIG = {
+            line1: "coming soon...",
+            line2: "stay tuned",
+            images: [
+                { src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop", name: "RYO" },
+                { src: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop", name: "KAITO" },
+                { src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop", name: "SORA" },
+                { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop", name: "YUNA" },
+                { src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop", name: "HARU" },
+                { src: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=800&auto=format&fit=crop", name: "REN" },
+            ]
+        };
+
+        const elements = {
+            logo: document.getElementById('logo-container'),
+            line: document.getElementById('loader-line'),
+            panelTop: document.getElementById('panel-top'),
+            panelBottom: document.getElementById('panel-bottom'),
+            leftSection: document.getElementById('left-section'),
+            copyWrapper: document.getElementById('copy-wrapper'),
+            rightSection: document.getElementById('right-section'),
+            heroTitle: document.getElementById('hero-title'),
+            typingArea: document.getElementById('typing-area'),
+            line1: document.getElementById('line-1'),
+            line2: document.getElementById('line-2-content'),
+            cursor: document.getElementById('main-cursor'),
+            enterPrompt: document.getElementById('enter-prompt'),
+            footerContent: document.getElementById('footer-content'),
+            colUp: document.getElementById('col-up'),
+            colDown: document.getElementById('col-down'),
+            roadDecor: document.getElementById('road-decor')
+        };
+
+        let currentPhase = 0;
+
+        async function typeWriter(element, text, speed = 100) {
+            for (let i = 0; i < text.length; i++) {
+                element.textContent += text.charAt(i);
+                await new Promise(r => setTimeout(r, speed));
+            }
+        }
+
+        async function init() {
+            // 1. Logo Fade In
+            await new Promise(r => setTimeout(r, 400));
+            elements.logo.style.opacity = '1';
+
+            // 2. Logo Fade Out
+            await new Promise(r => setTimeout(r, 2000));
+            elements.logo.style.opacity = '0';
+
+            // 3. Line Trace (Left to Right)
+            await new Promise(r => setTimeout(r, 800));
+            elements.line.style.transform = 'scaleX(1)';
+
+            // 4. Split Open
+            await new Promise(r => setTimeout(r, 700));
+            elements.line.style.opacity = '0'; // Hide line as it splits
+            elements.panelTop.style.transform = 'translateY(-100%)';
+            elements.panelBottom.style.transform = 'translateY(100%)';
+
+            // Start Main Phase after split
+            setTimeout(() => startPhase1(), 400);
+        }
+
+        async function startPhase1() {
+            currentPhase = 1;
+            elements.heroTitle.style.opacity = '1';
+            elements.roadDecor.style.opacity = '1';
+            
+            await new Promise(r => setTimeout(r, 1000));
+            
+            await typeWriter(elements.line1, CONFIG.line1);
+            await new Promise(r => setTimeout(r, 500));
+            
+            elements.cursor.classList.remove('hidden');
+            await typeWriter(elements.line2, CONFIG.line2);
+            
+            elements.enterPrompt.classList.add('fade-in');
+
+            document.body.addEventListener('click', enterPhase3, { once: true });
+            document.body.addEventListener('touchstart', enterPhase3, { once: true });
+        }
+
+        function createCard(item, index) {
+            const card = document.createElement('div');
+            card.className = 'artist-card flex-shrink-0 w-[40vw] md:w-full aspect-[4/5] bg-gray-100 overflow-hidden relative group shadow-lg';
+            card.innerHTML = `
+                <img src="${item.src}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                    <div class="text-white font-black text-lg md:text-2xl italic tracking-tighter transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        ${item.name}
+                    </div>
+                </div>
+                <div class="absolute top-2 left-2 flex flex-col">
+                    <span class="text-[6px] md:text-[8px] text-white font-black mono bg-red-600 px-1 italic uppercase">Unit-${String(index + 1).padStart(2, '0')}</span>
+                </div>
+            `;
+            return card;
+        }
+
+        function enterPhase3() {
+            if (currentPhase !== 1) return;
+            currentPhase = 3;
+
+            const isMobile = window.innerWidth < 768;
+
+            elements.leftSection.classList.remove('items-center', 'text-center');
+            elements.leftSection.classList.add('md:w-1/2', 'items-start', 'text-left');
+            elements.leftSection.classList.remove('h-full');
+            elements.leftSection.classList.add('h-[40vh]', 'md:h-full');
+            
+            elements.copyWrapper.classList.remove('text-center');
+            elements.copyWrapper.classList.add('text-left');
+            elements.typingArea.classList.remove('items-center');
+            elements.typingArea.classList.add('items-start');
+
+            elements.enterPrompt.style.display = 'none';
+            elements.footerContent.classList.remove('hidden');
+            elements.footerContent.classList.add('fade-in');
+
+            elements.rightSection.classList.remove('md:w-0', 'h-0');
+            elements.rightSection.classList.add('md:w-1/2', 'h-[60vh]', 'md:h-full', 'opacity-100');
+            
+            setupSlideshow(isMobile);
+        }
+
+        function setupSlideshow(isMobile) {
+            const listA = [...CONFIG.images, ...CONFIG.images, ...CONFIG.images];
+            const listB = [...CONFIG.images].reverse();
+            const listBFinal = [...listB, ...listB, ...listB];
+            
+            if (isMobile) {
+                elements.colUp.classList.add('animate-h-left');
+                elements.colDown.classList.add('animate-h-right');
+            } else {
+                elements.colUp.classList.add('animate-v-up');
+                elements.colDown.classList.add('animate-v-down');
+            }
+
+            listA.forEach((item, idx) => {
+                elements.colUp.appendChild(createCard(item, idx % CONFIG.images.length));
+            });
+
+            listBFinal.forEach((item, idx) => {
+                elements.colDown.appendChild(createCard(item, idx % CONFIG.images.length));
+            });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

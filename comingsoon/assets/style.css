@@ -1,0 +1,83 @@
+:root{
+  --red:#ec2222;
+  --black:#000;
+  --white:#fff;
+}
+
+body{
+  font-family: Helvetica, Arial, sans-serif;
+  background: var(--white);
+  color: var(--black);
+}
+
+/* ===== HERO ===== */
+.hero{
+  min-height: 100vh;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* header / logo / arrow */
+}
+
+.header{
+  top: 0;
+  z-index: 10;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(6px);
+  height: 56px;
+  position: relative; /* ← これ重要 */
+}
+
+.nav{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-links{
+  display: flex;
+  gap: 50px;
+  list-style: none;
+}
+
+.nav-links a{
+  color: var(--red);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bolder;
+  letter-spacing: .12em;
+  text-align: center;
+}
+
+.social-links{
+  position: absolute;
+  right: 16px;
+  display: flex;
+  gap: 30px;
+  list-style: none;
+}
+
+.hero-image img{
+  width: 200px;
+  max-width: 70vw;
+  height: auto;
+}
+
+.hero-image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.comingsoon-logo{
+  width: 120px;
+  opacity: 0.9;
+}
+
+/* ===== CONTENT ===== */
+
+.comingsoon{
+  min-height: 100vh;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* header / logo / arrow */
+}
