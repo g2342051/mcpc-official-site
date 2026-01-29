@@ -2,12 +2,14 @@
   --red:#ec2222;
   --black:#000;
   --white:#fff;
+  --gray: #9c9c9c;
 }
 
 body{
   font-family: Helvetica, Arial, sans-serif;
   background: var(--white);
   color: var(--black);
+  overflow-x: hidden;
 }
 
 h1, h2 {
@@ -27,7 +29,7 @@ h1, h2 {
 .header{
   top: 0;
   z-index: 10;
-  background: rgba(255,255,255,0.9);
+  background: var(--white);
   backdrop-filter: blur(6px);
   height: 56px;
   position: relative; /* ← これ重要 */
@@ -119,45 +121,139 @@ h1, h2 {
   color: var(--black);
 }
 
-/* ===== CONTENT ===== */
+/* ================ 
 
-.comingsoon{
-  min-height: 100vh;
+CONTENT 
+
+=================== */
+
+.horizontal-section {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
 }
 
-.comingsoon-container {
+.inner-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 150vw;
+  will-change: transform;
+}
+
+.panel {
+  width: 50vw;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.panel-intro {
+  max-width: 450px;
+  width: 100%;
   background-color: var(--red);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
-.comingsoon-container h1 {
+.panel-intro h1 {
   color: var(--black);
-  font-size: 54px;
+  font-size: 3.5rem;
   margin-top: 10px;
 }
 
-.comingsoon-container h2 {
+.panel-intro h2 {
   color: var(--black);
   font-size: 70px;
   margin-top:150px;
 }
 
-.comingsoon-text {
+.panel-intro .comingsoon-text {
   color: var(--black);
-  font-size: 18px;
+  font-size: 0.75rem;
   font-weight: 400;
-  padding: 0 0 20 0;
+  padding: 0 0 20px 0;
   line-height: 2;
 }
 
-/* ==== footer ==== */
+
+
+/* パネル2: キービジュアル (道路など) */
+.panel-kv {
+  background-color: #f0f0f0;
+  padding: 0;
+  position: relative;
+}
+
+.kv-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e5e5e5;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 道路イメージの仮装飾 */
+.kv-image::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 20px;
+  background: repeating-linear-gradient(to right, #cc0000, #cc0000 40px, transparent 40px, transparent 80px);
+  transform: rotate(-30deg);
+}
+
+.kv-label {
+  position: relative;
+  z-index: 10;
+  color: #999;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+
+/* パネル3: Check It (赤背景) */
+.panel-check {
+  background-color: var(--red);
+  color: var(--black);
+  align-items: center;
+}
+
+.panel-check h2 {
+  font-size: 3rem;
+  font-weight: 900;
+  font-style: italic;
+  margin-bottom: 30px;
+}
+
+.check-box {
+  width: 300px;
+  height: 300px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+
+/* ============= 
+
+footer 
+
+================ */
 .footer-social-links {
   background: var(--black);
   display: flex;
