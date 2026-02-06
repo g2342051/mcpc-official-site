@@ -17,6 +17,58 @@ h1, h2 {
   line-height: 1.1; /* 見出しは詰め気味が映える */
 }
 
+/* Loading - Custom Split Animation */
+        .loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .loader-panel {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: var(--black);
+            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        .panel-top { top: 0; }
+        .panel-bottom { bottom: 0; }
+
+        .logo-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 110;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            pointer-events: none;
+        }
+
+        /* Center Line Animation */
+        .loader-line {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--white);
+            z-index: 120;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+      .logo-container img{
+        width: 250px;
+        max-width: 70vw;
+        height: auto;
+      }
+
 
 /* ===== HERO ===== */
 .hero{
@@ -24,6 +76,15 @@ h1, h2 {
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto; /* header / logo / arrow */
+
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  transition-delay: 0.3s; /* パネルが割れ始めてから少し遅れて開始 */
+}
+/* このクラスがJSで付与されたら表示される */
+.hero.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .header{
