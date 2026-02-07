@@ -99,9 +99,9 @@ function setupHorizontalScroll() {
     },
   });
 
-  tl.to({}, { duration: 2 });
+  tl.to({}, { duration: 0.1 });
   tl.to(wrapper, { x: "-50vw", ease: "none" });
-  tl.to({}, { duration: 2 });
+  tl.to({}, { duration: 0.1 });
 }
 
 // ここが無いとローダーは動きません
