@@ -149,4 +149,22 @@ window.addEventListener("load", async () => {
         //});
 
         // 3. 最後：少し「遊び」を入れて、急に縦スクロールに戻るのを防ぐ
-        //tl.to({}, { duration: 2 }); 
+        //tl.to({}, { duration: 2 });
+// スムーズスクロール設定（GSAP ScrollToPlugin使用）
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault(); // デフォルトのパッと切り替わる動きを止める
+
+    const targetId = this.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+
+    if (targetElement) {
+      // GSAPを使ってターゲットまでスクロール
+      gsap.to(window, {
+        duration: 1,        // スクロールにかかる秒数
+        scrollTo: targetElement,
+        ease: "power3.inOut"  // 加減速の具合（滑らかになります）
+      });
+    }
+  });
+});
