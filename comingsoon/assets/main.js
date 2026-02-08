@@ -67,42 +67,6 @@ async function runLoader() {
 }
 
 
-function setupHorizontalScroll() {
-  // GSAP/ScrollTriggerが無いならここで終了（ローダーは消えてるので黒画面にはならない）
-  if (typeof gsap === "undefined") {
-    console.warn("[gsap] gsap が読み込まれてない");
-    return;
-  }
-  if (typeof ScrollTrigger === "undefined") {
-    console.warn("[gsap] ScrollTrigger が読み込まれてない");
-    return;
-  }
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const wrapper = document.querySelector(".inner-wrapper");
-  const section = document.querySelector(".horizontal-section");
-
-  if (!wrapper || !section) {
-    console.warn("[scroll] 必要な要素が見つかりません (.horizontal-section / .inner-wrapper)");
-    return;
-  }
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: section,
-      start: "top top",
-      end: "+=2000",
-      pin: true,
-      scrub: 1,
-      anticipatePin: 1,
-    },
-  });
-
-  tl.to({}, { duration: 0.1 });
-  tl.to(wrapper, { x: "-50vw", ease: "none" });
-  tl.to({}, { duration: 0.1 });
-}
 
 // ここが無いとローダーは動きません
 window.addEventListener("load", async () => {
