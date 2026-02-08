@@ -1,0 +1,289 @@
+:root{
+  --red:#ec2222;
+  --black:#000;
+  --white:#fff;
+  --gray: #9c9c9c;
+}
+
+body{
+  font-family:"tt-commons-pro", sans-serif;
+  background: var(--white);
+  color: var(--black);
+  overflow-x: hidden;
+}
+
+h1, h2 {
+  margin: 0;
+  line-height: 1.1; /* 見出しは詰め気味が映える */
+}
+
+/* Loading - Custom Split Animation */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+.loader-panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--black);
+  transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+}
+.panel-top { top: 0; }
+.panel-bottom { bottom: 0; }
+.logo-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 110;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+/* Center Line Animation */
+.loader-line {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--white);
+  z-index: 120;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.logo-container img{
+  width: 250px;
+  max-width: 70vw;
+  height: auto;
+}
+
+/* ===== HERO ===== */
+.hero{
+  min-height: 100vh;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* header / logo / arrow */
+
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  transition-delay: 0.3s; /* パネルが割れ始めてから少し遅れて開始 */
+}
+/* このクラスがJSで付与されたら表示される */
+.hero.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.header{
+  top: 0;
+  z-index: 10;
+  background: var(--white);
+  backdrop-filter: blur(6px);
+  height: 56px;
+  position: relative; /* ← これ重要 */
+}
+.nav{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.nav-links{
+  display: flex;
+  gap: 50px;
+  list-style: none;
+}
+.nav-links a{
+  position: relative;
+  color: var(--red);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bolder;
+  letter-spacing: .12em;
+  text-align: center;
+  transition: color .3s ease;
+}
+.nav-links a::after{
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--black);
+  transition: width .3s ease;
+}
+.nav-links a:hover{
+  color: var(--black);
+}
+.nav-links a:hover::after{
+  width: 100%;
+}
+.social-links{
+  position: absolute;
+  right: 16px;
+  display: flex;
+  gap: 30px;
+  list-style: none;
+}
+.social-links a{
+  color: var(--red);
+  text-decoration: none;
+  font-size: 15px;
+  display: inline-block;
+  transition: color .3s ease, transform .3s ease;
+}
+.social-links a:hover {
+  color: var(--black);
+  transform: scale(1.15);  
+}
+.hero img{
+  width: 400px;
+  max-width: 70vw;
+  height: auto;
+}
+.hero-image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo-horizontal{
+  width: 70px;
+  opacity: 0.9;
+  color: var(--black);
+}
+
+/* ================ 
+
+CONTENT 
+
+=================== */
+.horizontal-section {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.inner-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 200vw;
+  will-change: transform;
+}
+
+.panel {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+
+  color: var(--black);
+}
+.panel h1 {
+  font-weight: 600;
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+.panel h2 {
+  font-weight: 600;
+  font-size: 65px;
+  margin-top:70px;
+}
+.panel p {
+  font-size: 0.85rem;
+  padding: 0 0 20px 0;
+  line-height: 2.5;
+  font-weight: 100;
+}
+.panel-check h2 {
+  margin-top:20px;
+  font-size: 55px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.panel-intro{
+  width: 50vw; /* 左半分 */
+  height: 100vh;
+  background-color: var(--red);
+  padding: 40px;
+  box-sizing: border-box;
+
+  text-align: center;
+}
+
+.panel-kv {
+  width: 50vw; /* 右半分 */
+  height: 100vh;
+  overflow: hidden;
+}
+.panel-kv img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 画像を隙間なく表示 */
+}
+
+/* パネル3: Check It (赤背景) */
+.panel-check{
+  width: 43vw; /* 左半分 */
+  height: 100vh;
+  background-color: var(--red);
+  padding: 40px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.check-box {
+  width: 300px;
+  height: 300px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+
+/* ============= 
+
+footer 
+
+================ */
+.footer-social-links {
+  width: 100%;
+  height: 60px;
+  background: var(--black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.footer-social-links ul{
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+  padding: 0;
+  margin: 0;
+}
+.footer-social-links a{
+  color: var(--white);
+  text-decoration: none;
+  font-size: 13px;
+  display: inline-block;
+  transition: color .3s ease, transform .3s ease;
+}
+.footer-social-links a:hover {
+  color: var(--red);
+  transform: scale(1.15);  
+}
