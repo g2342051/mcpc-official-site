@@ -125,12 +125,6 @@ h1, h2 {
   background: var(--black);
   transition: width .3s ease;
 }
-.nav-links a:hover{
-  color: var(--black);
-}
-.nav-links a:hover::after{
-  width: 100%;
-}
 .social-links{
   position: absolute;
   right: 16px;
@@ -144,10 +138,6 @@ h1, h2 {
   font-size: 15px;
   display: inline-block;
   transition: color .3s ease, transform .3s ease;
-}
-.social-links a:hover {
-  color: var(--black);
-  transform: scale(1.15);  
 }
 .hero img{
   width: 400px;
@@ -219,7 +209,6 @@ CONTENT
   display: inline-block;
   transition: color .3s ease, transform .3s ease;
 }
-.intro-social-links a:hover { color: var(--red); transform: scale(1.35);  }
 
 /* --- KV Panel --- */
 .panel-kv {
@@ -239,6 +228,14 @@ CONTENT
 .reveal-item {
   opacity: 0;
   transform: translateY(40px);
+}
+
+/* Hover: Only apply to devices that support real hover */
+@media (hover: hover) {
+  .nav-links a:hover { color: var(--black); }
+  .nav-links a:hover::after { width: 100%; }
+  .social-links a:hover { transform: scale(1.15); color: var(--black); }
+  .intro-social-links a:hover { color: var(--black); transform: scale(1.2); }
 }
 
 /* ========================
