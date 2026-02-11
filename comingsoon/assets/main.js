@@ -1,7 +1,7 @@
-// ================================
-// Loader + Horizontal Scroll (GSAP)
-// ================================
+// GSAP関連プラグインの登録
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
+// ローディング要素を取得
 const elements = {
     loader: document.querySelector(".loader"),
     logo: document.querySelector(".logo-container"),
@@ -9,6 +9,7 @@ const elements = {
     panelTop: document.querySelector(".panel-top"),
     panelBottom: document.querySelector(".panel-bottom"),
 };
+
 // ちょっと待つ用（async/awaitで「演出の順番」を書くため）
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -57,9 +58,7 @@ async function runLoader() {
 
   // ★ ここで中のコンテンツにクラスを付与！
   const hero = document.querySelector(".hero");
-  if (hero) {
-    hero.classList.add("is-visible");
-  }
+  if (hero) { hero.classList.add("is-visible");}
 
   // 5) ローダー自体を消す（クリック等を邪魔しないように）
   await sleep(900);
@@ -83,55 +82,35 @@ window.addEventListener("load", async () => {
   setupHorizontalScroll();
 });
 
-
-
-
-// GSAP横スクロールをセットアップ
-//gsap.registerPlugin(ScrollTrigger);
-  //      const wrapper = document.querySelector(".inner-wrapper");
-        
-        // タイムライン設定
-    //    const tl = gsap.timeline({
-      //      scrollTrigger: {
-        //        trigger: ".horizontal-section",
-          //      start: "top top",
-            //    end: "+=2000",   // スクロール量（重さの調節）
-              //  pin: true,       // 画面固定
-                //scrub: 1,      // 操作への追従速度（0.5は比較的軽め）
-            //    anticipatePin: 1
-            //}
-        //});
-
-        // 1. 最初：少し「遊び」を入れて、すぐには動かないようにする
-        //tl.to({}, { duration: 2 });
-
-        // 2. 移動：横に50vwスライド
-        //tl.to(wrapper, {
-            //x: "-50vw",
-            //ease: "none",      // 等速で動かして軽さを出す
-            //duration: 8
-        //});
-
-        // 3. 最後：少し「遊び」を入れて、急に縦スクロールに戻るのを防ぐ
-        //tl.to({}, { duration: 2 });
-// スムーズスクロール設定（GSAP ScrollToPlugin使用）
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault(); // デフォルトのパッと切り替わる動きを止める
-
-    const targetId = this.getAttribute('href');
-    const targetElement = document.querySelector(targetId);
-
-    if (targetElement) {
-      // GSAPを使ってターゲットまでスクロール
-      gsap.to(window, {
-        duration: 1,        // スクロールにかかる秒数
-        scrollTo: targetElement,
-        ease: "power3.inOut"  // 加減速の具合（滑らかになります）
-      });
-    }
+function setupAnimations() {
+  // 1. テキストリビール (reveal-item)
+  gsap.utils.toArray('.reveal-item').forEach((item, i) => {
+    gsap.to(item, {
+      scrollTrigger: {
+        trigger: item,
+        start: "top 92%", 
+        toggleActions: "play none none reverse"
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: "power3.out",
+      delay: (i % 3) * 0.1
+    });
   });
-});
+  // KV ズームアウト
+  gsap.to("#main-kv-img", {
+    scrollTrigger: {
+      trigger: ".panel-kv",
+      start: "top bottom",// 写真パネルが画面の下端に入ったら開始
+      end: "bottom center",// パネルが画面中央に来る頃には完了
+      scrub: 1.5
+    },
+    scale: 1,
+    y: "5%",
+    ease: "none"
+  });
+}
 
 // main.js の最後の方に追加
 // main.js のハンバーガーメニュー処理部分
@@ -162,4 +141,30 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+});
+// --- Initialization ---
+window.addEventListener("load", async () => {
+  await runLoader();
+  setupAnimations(); // ← ここを実行することでアニメーションが始まります
+  setupMenu();
+});
+
+
+// スムーズスクロール設定（GSAP ScrollToPlugin使用）
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault(); // デフォルトのパッと切り替わる動きを止める
+
+    const targetId = this.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+
+    if (targetElement) {
+      // GSAPを使ってターゲットまでスクロール
+      gsap.to(window, {
+        duration: 1,        // スクロールにかかる秒数
+        scrollTo: targetElement,
+        ease: "power3.inOut"  // 加減速の具合（滑らかになります）
+      });
+    }
+  });
 });
