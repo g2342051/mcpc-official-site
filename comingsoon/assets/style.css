@@ -4,6 +4,11 @@
   --white:#fff;
   --gray: #9c9c9c;
 }
+/* style.css */
+.overflow-hidden {
+    overflow: hidden !important; /* 他のスタイルに負けないよう !important を推奨 */
+    height: 100%;
+}
 
 body{
   font-family:"tt-commons-pro", sans-serif;

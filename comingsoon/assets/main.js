@@ -134,20 +134,32 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // main.js の最後の方に追加
-const menuTrigger = document.getElementById('menu-trigger');
-const navMenu = document.getElementById('nav');
+// main.js のハンバーガーメニュー処理部分
 
-if (menuTrigger && navMenu) {
-    menuTrigger.addEventListener('click', () => {
-        menuTrigger.classList.toggle('active'); // ボタンを「×」にする
-        navMenu.classList.toggle('active');    // メニューを出す
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    const menuTrigger = document.getElementById('menu-trigger');
+    const navMenu = document.getElementById('nav');
+    const body = document.body; // body要素を取得
 
-    // リンクをクリックしたらメニューを閉じる
-    navMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            menuTrigger.classList.remove('active');
-            navMenu.classList.remove('active');
+    if (menuTrigger && navMenu) {
+        menuTrigger.addEventListener('click', () => {
+            menuTrigger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            
+            // --- ここを追加 ---
+            // メニューが開いている（activeクラスがある）ときだけクラスを付与
+            body.classList.toggle('overflow-hidden');
         });
-    });
-}
+
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuTrigger.classList.remove('active');
+                navMenu.classList.remove('active');
+                
+                // --- ここを追加 ---
+                // リンクをクリックしてメニューが閉じたらスクロールを戻す
+                body.classList.remove('overflow-hidden');
+            });
+        });
+    }
+});
