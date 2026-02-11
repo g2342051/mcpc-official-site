@@ -376,7 +376,6 @@ RESPONRIVE DESIGN
     .panel-kv {
         width: 100%;
         height: auto;
-        padding: 40px; /* 上下左右に余白を作る */
         box-sizing: border-box;
         background-color: var(--white); /* 余白の色を背景に合わせる */
     }
@@ -422,7 +421,7 @@ RESPONRIVE DESIGN
     width: 200px;
   }
   .panel-intro p{
-    font-size: 10px;
+    font-size: 13px;
   }
 
 }
