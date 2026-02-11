@@ -179,39 +179,18 @@ CONTENT
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: var(--red);
   color: var(--black);
 }
-.panel h1 {
-  font-weight: 600;
-  font-size: 40px;
-  margin-bottom: 20px;
-}
-.panel h2 {
-  font-weight: 600;
-  font-size: 65px;
-  margin-top:25px;
-}
-.panel p {
-  font-size: 0.85rem;
-  padding: 0 0 20px 0;
-  line-height: 2.0;
-  font-weight: 100;
-}
-/*
-.panel-check h2 {
-  margin-top:20px;
-  font-size: 55px;
-  font-weight: 600;
-  margin-bottom: 30px;
-}
-  */
+.panel h1 { font-weight: 600; font-size: 40px; margin-bottom: 20px;}
+.panel h2 { font-weight: 600; font-size: 65px; margin-top:25px;}
+.panel p { font-size: 0.85rem; padding: 0 0 20px 0; line-height: 2.0; font-weight: 100;}
 
 .panel-intro{
   width: 50vw; /* 左半分 */
   height: 100vh;
   padding: 40px;
   box-sizing: border-box;
+  background-color: var(--red);
 
   /* --- 上下左右中央揃えの設定 --- */
   display: flex;
@@ -240,20 +219,26 @@ CONTENT
   display: inline-block;
   transition: color .3s ease, transform .3s ease;
 }
-.intro-social-links a:hover {
-  color: var(--red);
-  transform: scale(1.35);  
-}
+.intro-social-links a:hover { color: var(--red); transform: scale(1.35);  }
 
+/* --- KV Panel --- */
 .panel-kv {
   width: 50vw; /* 右半分 */
   height: 100vh;
   overflow: hidden;
+  position: relative;
+  background-color: var(--white);
 }
 .panel-kv img {
   width: 100%;
   height: 100%;
   object-fit: cover; /* 画像を隙間なく表示 */
+}
+
+/* アニメーション用クラス */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(40px);
 }
 
 /* ========================
@@ -391,7 +376,6 @@ RESPONRIVE DESIGN
     .panel-kv {
         width: 100%;
         height: auto;
-        padding: 40px; /* 上下左右に余白を作る */
         box-sizing: border-box;
         background-color: var(--white); /* 余白の色を背景に合わせる */
     }
@@ -426,4 +410,21 @@ RESPONRIVE DESIGN
     .menu-trigger {
         display: none;
     }
+}
+
+/* ===== スマホ用 ===== */
+@media (max-width: 480px) {
+  .hero img{
+    width: 200px;
+  }
+  .logo-container img{
+    width: 200px;
+  }
+  .panel-intro p{
+    font-size: 10px;
+    padding: 0 20px 0 20px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
 }
