@@ -421,7 +421,10 @@ RESPONRIVE DESIGN
     width: 200px;
   }
   .panel-intro p{
-    font-size: 13px;
+    font-size: 10px;
+    padding: 0 20px 0 20px;
+    line-height: 1.7;
+    margin-bottom: 20px;
   }
 
 }
