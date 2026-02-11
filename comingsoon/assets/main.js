@@ -132,3 +132,22 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+// main.js の最後の方に追加
+const menuTrigger = document.getElementById('menu-trigger');
+const navMenu = document.getElementById('nav');
+
+if (menuTrigger && navMenu) {
+    menuTrigger.addEventListener('click', () => {
+        menuTrigger.classList.toggle('active'); // ボタンを「×」にする
+        navMenu.classList.toggle('active');    // メニューを出す
+    });
+
+    // リンクをクリックしたらメニューを閉じる
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            menuTrigger.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    });
+}

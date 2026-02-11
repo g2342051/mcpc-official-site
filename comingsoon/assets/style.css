@@ -298,6 +298,71 @@ RESPONRIVE DESIGN
 }
 
 @media (max-width: 1024px) {
+  .menu-trigger {
+        position: absolute;
+        left: 20px; /* 左側に配置 */
+        top: 50%;
+        transform: translateY(-50%);
+        width: 30px;
+        height: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 100;
+        display: block; /* スマホ・タブレットで表示 */
+    }
+    .menu-trigger span {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: var(--red);
+        transition: all 0.4s;
+    }
+    .menu-trigger span:nth-child(1) { top: 0; }
+    .menu-trigger span:nth-child(2) { top: 11px; }
+    .menu-trigger span:nth-child(3) { bottom: 0; }
+
+    /* ボタンが active になった時の三本線の動き（×印） */
+    .menu-trigger.active span:nth-child(1) { transform: translateY(11px) rotate(-45deg); }
+    .menu-trigger.active span:nth-child(2) { opacity: 0; }
+    .menu-trigger.active span:nth-child(3) { transform: translateY(-11px) rotate(45deg); }
+
+    /* --- ナビゲーションを全画面メニューにする --- */
+    .nav {
+        position: fixed;
+        top: 0;
+        left: -100%; /* 最初は画面の外に隠す */
+        width: 100%;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.95);
+        transition: all 0.5s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 90;
+        transform: none; /* pc用の中央揃えを解除 */
+    }
+
+    .nav.active {
+        left: 0; /* クラスがついたら画面内へ */
+    }
+
+    .nav-links {
+        flex-direction: column; /* 縦並び */
+        gap: 40px;
+        text-align: center;
+    }
+
+    .nav-links a {
+        font-size: 24px; /* スマホでは少し大きく */
+    }
+
+    /* ソーシャルリンクはそのまま右上に（微調整が必要ならここで） */
+    .social-links {
+        right: 20px;
+    }
+
   /* 全体コンテナを縦並びに */
     .panel {
         flex-direction: column;
@@ -317,7 +382,6 @@ RESPONRIVE DESIGN
     }
 
     /* キービジュアルエリア（下半分） */
-  
 
     .panel-kv {
         width: 100%;
@@ -349,5 +413,12 @@ RESPONRIVE DESIGN
         font-size: 15px;
         line-height: 1.8;
         /* iPadでは改行を生かした方が読みやすい場合があるため、brはそのまま */
+    }
+}
+
+/* 1025px以上（PC）ではボタンを隠す */
+@media (min-width: 1025px) {
+    .menu-trigger {
+        display: none;
     }
 }
