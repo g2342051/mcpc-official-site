@@ -98,18 +98,6 @@ function setupAnimations() {
       delay: (i % 3) * 0.1
     });
   });
-  // KV ズームアウト
-  gsap.to("#main-kv-img", {
-    scrollTrigger: {
-      trigger: ".panel-kv",
-      start: "top bottom",// 写真パネルが画面の下端に入ったら開始
-      end: "bottom center",// パネルが画面中央に来る頃には完了
-      scrub: 1.5
-    },
-    scale: 1,
-    y: "5%",
-    ease: "none"
-  });
 }
 
 // main.js の最後の方に追加
