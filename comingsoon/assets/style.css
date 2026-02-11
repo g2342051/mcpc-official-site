@@ -174,7 +174,7 @@ CONTENT
   display: flex;
   width: 100vw;
   height: 100vh;
-
+  background-color: var(--red);
   color: var(--black);
 }
 .panel h1 {
@@ -185,28 +185,34 @@ CONTENT
 .panel h2 {
   font-weight: 600;
   font-size: 65px;
-  margin-top:70px;
+  margin-top:25px;
 }
 .panel p {
   font-size: 0.85rem;
   padding: 0 0 20px 0;
-  line-height: 2.5;
+  line-height: 2.0;
   font-weight: 100;
 }
+/*
 .panel-check h2 {
   margin-top:20px;
   font-size: 55px;
   font-weight: 600;
   margin-bottom: 30px;
 }
+  */
 
 .panel-intro{
   width: 50vw; /* 左半分 */
   height: 100vh;
-  background-color: var(--red);
   padding: 40px;
   box-sizing: border-box;
 
+  /* --- 上下左右中央揃えの設定 --- */
+  display: flex;
+  flex-direction: column;   /* 子要素を縦に並べる */
+  justify-content: center;  /* 垂直方向（上下）の中央揃え */
+  align-items: center;      /* 水平方向（左右）の中央揃え */
   text-align: center;
 }
 .intro-social-links {
@@ -243,4 +249,105 @@ CONTENT
   width: 100%;
   height: 100%;
   object-fit: cover; /* 画像を隙間なく表示 */
+}
+
+/* ========================
+RESPONRIVE DESIGN 
+========================= */
+@media (max-width: 1240px) {
+  .nav-links{
+    gap: 20px;
+  }
+  .nav-links a{
+    font-size: 13px;
+  }
+  .social-links{
+    gap: 20px;
+  }
+  .social-links a{
+    font-size: 13px;
+  }
+  .hero img{
+    width: 300px;
+  }
+  .logo-horizontal{
+    width: 60px;
+  }
+
+  .panel h1 {
+    font-size: 20px;
+  }
+  .panel h2 {
+    font-size: 45px;
+    margin-top: 25px;
+  }
+  .panel p {
+    font-size: 0.70rem;
+    line-height: 1.7;
+  }
+  .panel-intro{
+    width: 40%;
+    height: auto;
+    padding: 30px;
+  }
+  .panel-kv {
+    width: 60%;
+    height: auto;
+
+  }
+}
+
+@media (max-width: 1024px) {
+  /* 全体コンテナを縦並びに */
+    .panel {
+        flex-direction: column;
+        width: 100%;
+        height: auto; /* コンテンツ量に応じて高さを可変に */
+    }
+
+    /* テキストエリア（上半分） */
+    .panel-intro {
+        width: 100%;
+        min-height: 55vh; /* iPadの画面内で適度な高さを確保 */
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* キービジュアルエリア（下半分） */
+  
+
+    .panel-kv {
+        width: 100%;
+        height: auto;
+        padding: 40px; /* 上下左右に余白を作る */
+        box-sizing: border-box;
+        background-color: var(--white); /* 余白の色を背景に合わせる */
+    }
+
+
+
+    .panel-kv img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: contain; /* 写真の端が切れるのを完全に防ぐ */
+    }
+
+    /* iPadで見やすいように文字サイズを微調整 */
+    .panel h2 {
+        font-size: clamp(40px, 8vw, 56px); /* COMING SOON */
+        margin-top: 0;
+    }
+    .panel h1 {
+        font-size: clamp(24px, 4vw, 32px); /* SPRING 2026 */
+        margin-bottom: 20px;
+    }
+    .comingsoon-text p {
+        font-size: 15px;
+        line-height: 1.8;
+        /* iPadでは改行を生かした方が読みやすい場合があるため、brはそのまま */
+    }
 }
