@@ -170,7 +170,8 @@ h1, h2 {
 .nav{
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
 .nav-links{
   display: flex;
@@ -201,9 +202,14 @@ h1, h2 {
 .social-links{
   position: absolute;
   right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   gap: 30px;
   list-style: none;
+  margin: 0; 
+  padding: 0; 
+  align-items: center; /* アイコン同士の高さも揃える */
 }
 .social-links a{
   color: var(--red);
@@ -211,6 +217,10 @@ h1, h2 {
   font-size: 15px;
   display: inline-block;
   transition: color .3s ease, transform .3s ease;
+
+  line-height: 1; /* 行の高さをリセットして中央に寄せやすくする */
+  align-items: center; /* アイコンを縦方向に中央揃え */
+  justify-content: center; /* アイコンを横方向に中央揃え */
 }
 .hero img{
   width: 400px;
@@ -249,7 +259,7 @@ CONTENT
 .panel p { font-size: 0.85rem; padding: 0 0 20px 0; line-height: 2.0; font-weight: 100;}
 
 .panel-intro{
-  width: 50vw; /* 左半分 */
+  width: 50vw;
   height: 100vh;
   padding: 40px;
   box-sizing: border-box;
@@ -285,7 +295,7 @@ CONTENT
 
 /* --- KV Panel --- */
 .panel-kv {
-  width: 50vw; /* 右半分 */
+  width: 50vw;
   height: 100vh;
   overflow: hidden;
   position: relative;
@@ -407,7 +417,6 @@ RESPONRIVE DESIGN
     display: block;
     object-fit: contain; /* 写真の端が切れるのを完全に防ぐ */
   }
-  /* iPadで見やすいように文字サイズを微調整 */
   .panel h2 {
     font-size: clamp(40px, 8vw, 56px); /* COMING SOON */
     margin-top: 0;
@@ -419,7 +428,6 @@ RESPONRIVE DESIGN
   .comingsoon-text p {
     font-size: 15px;
     line-height: 1.8;
-    /* iPadでは改行を生かした方が読みやすい場合があるため、brはそのまま */
   }
 }
 
