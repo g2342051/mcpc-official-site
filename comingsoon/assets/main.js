@@ -67,7 +67,7 @@ async function runLoader() {
 
 
 
-// ここが無いとローダーは動きません
+// ローダーの完了後に、スクロールトリガーなどの初期化を行う
 window.addEventListener("load", async () => {
   if (!assertElements()) return;
 
@@ -100,9 +100,7 @@ function setupAnimations() {
   });
 }
 
-// main.js の最後の方に追加
-// main.js のハンバーガーメニュー処理部分
-
+//ハンバーガーメニュー処理
 document.addEventListener('DOMContentLoaded', () => {
     const menuTrigger = document.getElementById('menu-trigger');
     const navMenu = document.getElementById('nav');
@@ -138,21 +136,20 @@ window.addEventListener("load", async () => {
 });
 
 
-// スムーズスクロール設定（GSAP ScrollToPlugin使用）
+// --- スムーズスクロール設定 ---
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault(); // デフォルトのパッと切り替わる動きを止める
-
-    const targetId = this.getAttribute('href');
-    const targetElement = document.querySelector(targetId);
-
-    if (targetElement) {
-      // GSAPを使ってターゲットまでスクロール
-      gsap.to(window, {
-        duration: 1,        // スクロールにかかる秒数
-        scrollTo: targetElement,
-        ease: "power3.inOut"  // 加減速の具合（滑らかになります）
-      });
-    }
-  });
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === "#" || !targetId.startsWith("#")) return; 
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            e.preventDefault();
+            gsap.to(window, {
+                duration: 1,
+                scrollTo: targetElement,
+                ease: "power3.inOut"
+            });
+        }
+    });
 });

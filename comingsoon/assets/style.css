@@ -10,13 +10,13 @@
     height: 100%;
 }
 
+/* ===== GLOBAL STYLES ===== */
 body{
   font-family:"tt-commons-pro", sans-serif;
   background: var(--white);
   color: var(--black);
   overflow-x: hidden;
 }
-
 h1, h2 {
   margin: 0;
   line-height: 1.1; /* 見出しは詰め気味が映える */
@@ -86,6 +86,79 @@ h1, h2 {
   transform: translateY(0);
 }
 
+/* ===== ハンバーガーメニューのスタイル ===== */
+.menu-trigger {
+    position: absolute;
+    left: 20px; /* 左側に配置 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    display: block; /* スマホ・タブレットで表示 */
+  }
+  .menu-trigger span {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: var(--red);
+    border-radius: 4px;
+    transition: background-color .6s ease;
+  }
+  /* 初期の配置 */
+  .menu-trigger span:nth-child(1) { top: 0; }
+  .menu-trigger span:nth-child(2) { top: 11px; }
+  .menu-trigger span:nth-child(3) { bottom: 0; }
+
+  @media(hover: hover) {
+    /* ×印になっていない時だけ、ホバーで線を寄せる */
+    /* 全ての線の色を同時に変える */
+    .menu-trigger:hover span:nth-child(1) { background-color: var(--black); }
+    .menu-trigger:hover span:nth-child(2) { background-color: var(--black); }
+    .menu-trigger:hover span:nth-child(3) { background-color: var(--black); } 
+  }
+
+  /* 開くとき（activeが付与されたとき）のアニメーション */
+  .menu-trigger.active span:nth-child(1) { animation: menu-bar01-open .75s forwards; }
+  .menu-trigger.active span:nth-child(2) { opacity: 0; transition: opacity .2s ease; }
+  .menu-trigger.active span:nth-child(3) { animation: menu-bar03-open .75s forwards; }
+
+  /*  閉じるとき（activeが外れたとき）のアニメーション */
+  .menu-trigger:not(.active) span:nth-child(1) { animation: menu-bar01-rev .75s forwards; }
+  .menu-trigger:not(.active) span:nth-child(2) { transition: opacity .25s .25s, background-color .6s ease; opacity: 1; }
+  .menu-trigger:not(.active) span:nth-child(3) { animation: menu-bar03-rev .75s forwards; }
+
+  /* --- アニメーションの定義 --- */
+  /* 1本目: 中央へ移動して45度回転 */
+  @keyframes menu-bar01-open {
+    0%    { transform: translateY(0) rotate(0); }
+    50%   { transform: translateY(11px) rotate(0); }
+    100%  { transform: translateY(11px) rotate(45deg); }
+  }
+  /* 1本目戻る　45度から水平に戻って上へ */
+  @keyframes menu-bar01-rev {
+    0%    { transform: translateY(11px) rotate(45deg); }
+    50%   { transform: translateY(11px) rotate(0); }
+    100%  { transform: translateY(0) rotate(0); }
+  }
+  /* 3本目: 中央へ移動して-45度回転 */
+  @keyframes menu-bar03-open {
+    0%    { transform: translateY(0) rotate(0); }
+    50%   { transform: translateY(-11px) rotate(0); }
+    100%  { transform: translateY(-11px) rotate(-45deg); }
+  }
+  /* 3本目戻る　-45度から水平に戻って下へ */
+  @keyframes menu-bar03-rev {
+    0%    { transform: translateY(-11px) rotate(-45deg); }
+    50%   { transform: translateY(-11px) rotate(0); }
+    100%  { transform: translateY(0) rotate(0); }
+  }
+
+/* ===== NAVIGATION ===== */
 .header{
   top: 0;
   z-index: 10;
@@ -230,14 +303,6 @@ CONTENT
   transform: translateY(40px);
 }
 
-/* Hover: Only apply to devices that support real hover */
-@media (hover: hover) {
-  .nav-links a:hover { color: var(--black); }
-  .nav-links a:hover::after { width: 100%; }
-  .social-links a:hover { transform: scale(1.15); color: var(--black); }
-  .intro-social-links a:hover { color: var(--black); transform: scale(1.2); }
-}
-
 /* ========================
 RESPONRIVE DESIGN 
 ========================= */
@@ -260,7 +325,6 @@ RESPONRIVE DESIGN
   .logo-horizontal{
     width: 60px;
   }
-
   .panel h1 {
     font-size: 20px;
   }
@@ -280,126 +344,83 @@ RESPONRIVE DESIGN
   .panel-kv {
     width: 60%;
     height: auto;
-
   }
 }
 
 @media (max-width: 1024px) {
-  .menu-trigger {
-        position: absolute;
-        left: 20px; /* 左側に配置 */
-        top: 50%;
-        transform: translateY(-50%);
-        width: 30px;
-        height: 24px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        z-index: 100;
-        display: block; /* スマホ・タブレットで表示 */
-    }
-    .menu-trigger span {
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        background-color: var(--red);
-        transition: all 0.4s;
-    }
-    .menu-trigger span:nth-child(1) { top: 0; }
-    .menu-trigger span:nth-child(2) { top: 11px; }
-    .menu-trigger span:nth-child(3) { bottom: 0; }
-
-    /* ボタンが active になった時の三本線の動き（×印） */
-    .menu-trigger.active span:nth-child(1) { transform: translateY(11px) rotate(-45deg); }
-    .menu-trigger.active span:nth-child(2) { opacity: 0; }
-    .menu-trigger.active span:nth-child(3) { transform: translateY(-11px) rotate(45deg); }
-
-    /* --- ナビゲーションを全画面メニューにする --- */
-    .nav {
-        position: fixed;
-        top: 0;
-        left: -100%; /* 最初は画面の外に隠す */
-        width: 100%;
-        height: 100vh;
-        background: rgba(255, 255, 255, 0.95);
-        transition: all 0.5s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 90;
-        transform: none; /* pc用の中央揃えを解除 */
-    }
-
-    .nav.active {
-        left: 0; /* クラスがついたら画面内へ */
-    }
-
-    .nav-links {
-        flex-direction: column; /* 縦並び */
-        gap: 40px;
-        text-align: center;
-    }
-
-    .nav-links a {
-        font-size: 24px; /* スマホでは少し大きく */
-    }
-
-    /* ソーシャルリンクはそのまま右上に（微調整が必要ならここで） */
-    .social-links {
-        right: 20px;
-    }
-
+  /* --- ナビゲーションを全画面メニューにする --- */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: -100%; /* 最初は画面の外に隠す */
+    width: 100%;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    transition: all 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 90;
+    transform: none; /* pc用の中央揃えを解除 */
+  }
+  .nav.active {
+    left: 0; /* クラスがついたら画面内へ */
+  }
+  .nav-links {
+    flex-direction: column; /* 縦並び */
+    gap: 40px;
+    text-align: center;
+  }
+  .nav-links a {
+    font-size: 24px; /* スマホでは少し大きく */
+  }
+  /* ソーシャルリンクはそのまま右上に（微調整が必要ならここで） */
+  .social-links {
+    right: 20px;
+  }
   /* 全体コンテナを縦並びに */
-    .panel {
-        flex-direction: column;
-        width: 100%;
-        height: auto; /* コンテンツ量に応じて高さを可変に */
-    }
-
-    /* テキストエリア（上半分） */
-    .panel-intro {
-        width: 100%;
-        min-height: 55vh; /* iPadの画面内で適度な高さを確保 */
-        padding: 40px 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* キービジュアルエリア（下半分） */
-
-    .panel-kv {
-        width: 100%;
-        height: auto;
-        box-sizing: border-box;
-        background-color: var(--white); /* 余白の色を背景に合わせる */
-    }
-
-
-
-    .panel-kv img {
-        width: 100%;
-        height: auto;
-        display: block;
-        object-fit: contain; /* 写真の端が切れるのを完全に防ぐ */
-    }
-
-    /* iPadで見やすいように文字サイズを微調整 */
-    .panel h2 {
-        font-size: clamp(40px, 8vw, 56px); /* COMING SOON */
-        margin-top: 0;
-    }
-    .panel h1 {
-        font-size: clamp(24px, 4vw, 32px); /* SPRING 2026 */
-        margin-bottom: 20px;
-    }
-    .comingsoon-text p {
-        font-size: 15px;
-        line-height: 1.8;
-        /* iPadでは改行を生かした方が読みやすい場合があるため、brはそのまま */
-    }
+  .panel {
+    flex-direction: column;
+    width: 100%;
+    height: auto; /* コンテンツ量に応じて高さを可変に */
+  }
+  /* テキストエリア（上半分） */
+  .panel-intro {
+    width: 100%;
+    min-height: 55vh; /* iPadの画面内で適度な高さを確保 */
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  /* キービジュアルエリア（下半分） */
+  .panel-kv {
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    background-color: var(--white); /* 余白の色を背景に合わせる */
+  }
+  .panel-kv img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain; /* 写真の端が切れるのを完全に防ぐ */
+  }
+  /* iPadで見やすいように文字サイズを微調整 */
+  .panel h2 {
+    font-size: clamp(40px, 8vw, 56px); /* COMING SOON */
+    margin-top: 0;
+  }
+  .panel h1 {
+    font-size: clamp(24px, 4vw, 32px); /* SPRING 2026 */
+    margin-bottom: 20px;
+  }
+  .comingsoon-text p {
+    font-size: 15px;
+    line-height: 1.8;
+    /* iPadでは改行を生かした方が読みやすい場合があるため、brはそのまま */
+  }
 }
 
 /* 1025px以上（PC）ではボタンを隠す */
@@ -423,5 +444,12 @@ RESPONRIVE DESIGN
     line-height: 1.7;
     margin-bottom: 20px;
   }
+}
 
+/* Hover: Only apply to devices that support real hover */
+@media (hover: hover) {
+  .nav-links a:hover { color: var(--black); }
+  .nav-links a:hover::after { width: 100%; }
+  .social-links a:hover { transform: scale(1.15); color: var(--black); }
+  .intro-social-links a:hover { color: var(--black); transform: scale(1.2); }
 }
