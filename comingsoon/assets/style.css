@@ -114,14 +114,6 @@ h1, h2 {
   .menu-trigger span:nth-child(2) { top: 11px; }
   .menu-trigger span:nth-child(3) { bottom: 0; }
 
-  @media(hover: hover) {
-    /* ×印になっていない時だけ、ホバーで線を寄せる */
-    /* 全ての線の色を同時に変える */
-    .menu-trigger:hover span:nth-child(1) { background-color: var(--black); }
-    .menu-trigger:hover span:nth-child(2) { background-color: var(--black); }
-    .menu-trigger:hover span:nth-child(3) { background-color: var(--black); } 
-  }
-
   /* 開くとき（activeが付与されたとき）のアニメーション */
   .menu-trigger.active span:nth-child(1) { animation: menu-bar01-open .75s forwards; }
   .menu-trigger.active span:nth-child(2) { opacity: 0; transition: opacity .2s ease; }
@@ -458,6 +450,10 @@ RESPONRIVE DESIGN
 @media (hover: hover) {
   .nav-links a:hover { color: var(--black); }
   .nav-links a:hover::after { width: 100%; }
-  .social-links a:hover { transform: scale(1.15); color: var(--black); }
+  .social-links a:hover { transform: scale(1.08); color: var(--black); }
   .intro-social-links a:hover { color: var(--black); transform: scale(1.2); }
+
+  .menu-trigger:hover span:nth-child(1) { background-color: var(--black); }
+  .menu-trigger:hover span:nth-child(2) { background-color: var(--black); }
+  .menu-trigger:hover span:nth-child(3) { background-color: var(--black); } 
 }
