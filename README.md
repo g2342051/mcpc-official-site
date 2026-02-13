@@ -1,2 +1,3 @@
 ### URL
-https://g2342051.github.io/mcpc-official-site/
+https://g2342051.github.io/mcpc-official-site/comingsoon
+
