@@ -84,110 +84,142 @@ function setupAnimations() {
   });
 }
 
-//ハンバーガーメニュー処理
-document.addEventListener('DOMContentLoaded', () => {
-    const menuTrigger = document.getElementById('menu-trigger');
-    const navMenu = document.getElementById('nav');
-    const body = document.body; // body要素を取得
+// 横スクロールのセットアップ
+function setupHorizontalScroll() {
+  const wrapper = document.querySelector(".inner-wrapper");
+    const section = document.querySelector(".horizontal-section");
+    if (!wrapper || !section) return;
 
-    if (menuTrigger && navMenu) {
-        menuTrigger.addEventListener('click', () => {
-            menuTrigger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-            
-            // --- ここを追加 ---
-            // メニューが開いている（activeクラスがある）ときだけクラスを付与
-            body.classList.toggle('overflow-hidden');
+    // matchMedia (tが抜けていたのを修正)
+    let mm = gsap.matchMedia();
+
+    mm.add("(min-width: 1025px)", () => {
+        // PC用の設定
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: section,
+                start: "top top",
+                end: () => `+=${wrapper.offsetWidth}`,
+                pin: true,
+                scrub: 1,
+                anticipatePin: 1,
+            },
         });
 
-        navMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuTrigger.classList.remove('active');
-                navMenu.classList.remove('active');
+        tl.to({}, { duration: 0.1 });
+        tl.to(wrapper, { x: "-50vw", ease: "none" });
+        tl.to({}, { duration: 0.1 });
+
+        return () => {
+            // リセット用
+            gsap.set(wrapper, { x: 0 });
+        };
+    });
+}
+
+//ハンバーガーメニュー処理
+//function setupMenu() {
+//    const menuTrigger = document.getElementById('menu-trigger');
+//    const navMenu = document.getElementById('nav');
+//    const body = document.body; // body要素を取得
+
+//    if (menuTrigger && navMenu) {
+//        menuTrigger.addEventListener('click', () => {
+//            menuTrigger.classList.toggle('active');
+//            navMenu.classList.toggle('active');
+            
+//            // --- ここを追加 ---
+//            // メニューが開いている（activeクラスがある）ときだけクラスを付与
+//            body.classList.toggle('overflow-hidden');
+//        });
+
+//        navMenu.querySelectorAll('a').forEach(link => {
+ //           link.addEventListener('click', () => {
+//                menuTrigger.classList.remove('active');
+//                navMenu.classList.remove('active');
                 
                 // --- ここを追加 ---
                 // リンクをクリックしてメニューが閉じたらスクロールを戻す
-                body.classList.remove('overflow-hidden');
-            });
+//                body.classList.remove('overflow-hidden');
+//            });
+//        });
+//      }
+//}
+
+// ハンバーガーメニューのセットアップ
+function setupMenu() {
+    const menuTrigger = document.getElementById('menu-trigger');
+    const navMenu = document.getElementById('nav');
+    const body = document.body;
+    // 要素がないときは何もしない（安全策）
+    if (!menuTrigger || !navMenu) return;
+
+    menuTrigger.addEventListener('click', () => {
+        menuTrigger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        body.classList.toggle('overflow-hidden');
+    });
+
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            menuTrigger.classList.remove('active');
+            navMenu.classList.remove('active');
+            body.classList.remove('overflow-hidden');
         });
-    }
-});
-// --- Initialization ---
-window.addEventListener("load", async () => {
-  await runLoader();
-  setupAnimations(); // ← ここを実行することでアニメーションが始まります
-  setupMenu();
-});
-
-
-// 横スクロールのセットアップ
-function setupHorizontalScroll() {
-  // GSAP/ScrollTriggerが無いならここで終了（ローダーは消えてるので黒画面にはならない）
-  if (typeof gsap === "undefined") {
-    console.warn("[gsap] gsap が読み込まれてない");
-    return;
-  }
-  if (typeof ScrollTrigger === "undefined") {
-    console.warn("[gsap] ScrollTrigger が読み込まれてない");
-    return;
-  }
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const wrapper = document.querySelector(".inner-wrapper");
-  const section = document.querySelector(".horizontal-section");
-
-  if (!wrapper || !section) {
-    console.warn("[scroll] 必要な要素が見つかりません (.horizontal-section / .inner-wrapper)");
-    return;
-  }
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: section,
-      start: "top top",
-      end: () => `+=${wrapper.offsetWidth}`,
-      pin: true,
-      scrub: 1,
-      anticipatePin: 1,
-    },
-  });
-
-  tl.to({}, { duration: 0.1 });
-  tl.to(wrapper, { x: "-50vw", ease: "none" });
-  tl.to({}, { duration: 0.1 });
+    });
 }
 
+
 // ここが無いとローダーは動きません
-window.addEventListener("load", async () => {
-  if (!assertElements()) return;
+//window.addEventListener("load", async () => {
+//  if (!assertElements()) return;
 
-  try {
-    await runLoader();
-  } catch (e) {
-    console.error("[loader] error:", e);
+//  try {
+//    await runLoader();
+//  } catch (e) {
+//    console.error("[loader] error:", e);
     // 失敗しても黒画面固定は回避
-    if (elements.loader) elements.loader.style.display = "none";
-  }
+//    if (elements.loader) elements.loader.style.display = "none";
+//  }
 
-  setupHorizontalScroll();
-});
+//  setupHorizontalScroll();
+//});
+
+
+
+
 
 // スムーズスクロール設定（GSAP ScrollToPlugin使用）
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault(); // デフォルトのパッと切り替わる動きを止める
+function setupSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault(); // デフォルトのパッと切り替わる動きを止める
 
-    const targetId = this.getAttribute('href');
-    const targetElement = document.querySelector(targetId);
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
 
-    if (targetElement) {
-      // GSAPを使ってターゲットまでスクロール
-      gsap.to(window, {
-        duration: 1,        // スクロールにかかる秒数
-        scrollTo: targetElement,
-        ease: "power3.inOut"  // 加減速の具合（滑らかになります）
-      });
-    }
+      if (targetElement) {
+        // GSAPを使ってターゲットまでスクロール
+        gsap.to(window, {
+          duration: 1,        // スクロールにかかる秒数
+          scrollTo: targetElement,
+          ease: "power3.inOut"  // 加減速の具合（滑らかになります）
+        });
+      }
+    });
   });
+}
+
+// --- 初期化を一か所に集約 ---
+window.addEventListener("load", async () => {
+    if (!assertElements()) return;
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+    await runLoader();
+    
+    setupAnimations();
+    setupHorizontalScroll();
+    setupMenu();
+    setupSmoothScroll();
 });
+

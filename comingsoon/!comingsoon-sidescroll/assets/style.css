@@ -194,7 +194,7 @@ h1, h2 {
 .social-links{
   position: absolute;
   right: 16px;
-  top: 50%;
+  top: 20%;
   transform: translateY(-50%);
   display: flex;
   gap: 30px;
@@ -206,7 +206,7 @@ h1, h2 {
 .social-links a{
   color: var(--red);
   text-decoration: none;
-  font-size: 15px;
+  font-size: 12px;
   display: inline-block;
   transition: color .3s ease, transform .3s ease;
 
@@ -436,6 +436,7 @@ CONTENT
 /* ========================
 RESPONRIVE DESIGN 
 ========================= */
+/* ちょっと小さくなったときの調整 */
 @media (max-width: 1240px) {
   .nav-links{
     gap: 20px;
@@ -493,9 +494,20 @@ RESPONRIVE DESIGN
   }
 }
 
+/* タブレットサイズ以下でのレイアウト変更 */
 @media (max-width: 1024px) {
   /* 横スクロールを解除して縦スクロールに切り替える */
+  .horizontal-section {
+    height: auto !important; /* 高さを自動にして縦スクロールに対応 */
+    overflow: visible !important;/* 横スクロールを解除 */
+  }
 
+  .inner-wrapper {
+    display: block !important; /* 横並びから縦並びに切り替え */
+    width: 100% !important; /* 横幅を100%に */
+      height: auto !important; /* コンテンツ量に応じて高さを可変に */
+      transform: none !important; /* 横スクロールのtransformを解除 */
+  }
   /* --- ナビゲーションを全画面メニューにする --- */
   .nav {
     position: fixed;
@@ -528,9 +540,9 @@ RESPONRIVE DESIGN
   }
   /* 全体コンテナを縦並びに */
   .panel {
-    flex-direction: column;
-    width: 100%;
-    height: auto; /* コンテンツ量に応じて高さを可変に */
+    width: 100% !important; /* 横幅を100%に */
+    height: auto !important; /* 高さを自動に */
+    flex-shrink: 1 !important; /* 縮小を許可 */
   }
   /* テキストエリア（上半分） */
   .panel-intro {
@@ -545,7 +557,7 @@ RESPONRIVE DESIGN
   /* キービジュアルエリア（下半分） */
   .panel-kv {
     width: 100%;
-    height: auto;
+    height: 100%;
     box-sizing: border-box;
     background-color: var(--white); /* 余白の色を背景に合わせる */
   }
@@ -567,6 +579,30 @@ RESPONRIVE DESIGN
     font-size: 15px;
     line-height: 1.8;
   }
+
+  /* チェックイットのレイアウト調整 */
+  .panel-check {
+    width: 100%;
+   height: auto;
+    padding: 30px 20px;
+    height: auto; /* 高さを自動に */
+    line-height: 1.0; /* 行間を詰める */
+     
+  }
+  .event-kv {
+    width: 80%;
+    height: auto;
+    margin-bottom: 30px; /* テキストとの間にスペース */
+  }
+   .check-overlay {
+    width: 100%; /* 横幅を100%に */
+    transform: none; /* 位置調整を解除 */
+   }
+    .check-overlay h2 {
+      width: 120%; /* 横幅を100%に */
+      margin-left: -10%; /* 中央揃えにするためにマージンをリセット */
+      font-size: 25px;
+    }
 }
 
 /* 1025px以上（PC）ではボタンを隠す */
@@ -590,6 +626,33 @@ RESPONRIVE DESIGN
     line-height: 1.7;
     margin-bottom: 20px;
   }
+  .panel-check {
+    flex-direction: column; /* 縦並びに */
+    gap: 20px;
+  }
+  .check-overlay {
+    width: 100%;
+    text-align: center;
+    transform: none;
+  }
+  .check-overlay h2 {
+    width: 100%;
+    margin: 0;
+    font-size: 22px;;
+  }
+   .check-overlay h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+   .check-overlay-text p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+   .check-overlay-text p strong {
+    font-size: 18px;
+    padding: 0 5px;
+   }
+    
 }
 
 /* Hover: Only apply to devices that support real hover */
