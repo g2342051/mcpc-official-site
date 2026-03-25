@@ -591,12 +591,12 @@ RESPONRIVE DESIGN
      
   }
   .event-kv {
-    width: 40%;
+    width: 45%;
     height: auto;
     margin-bottom: 30px; /* テキストとの間にスペース */
   }
    .check-overlay {
-    width: 50%; /* 横幅を100%に */
+    width: 55%; /* 横幅を100%に */
     transform: none; /* 位置調整を解除 */
    }
     .check-overlay h2 {
@@ -643,6 +643,11 @@ RESPONRIVE DESIGN
     flex-direction: column; /* 縦並びに */
     gap: 20px;
   }
+
+  .event-kv {
+    width: 80%;
+    height: auto;
+  }
   .check-overlay {
     width: 100%;
     text-align: center;
@@ -651,10 +656,10 @@ RESPONRIVE DESIGN
   .check-overlay h2 {
     width: 100%;
     margin: 0;
-    font-size: 22px;;
+    font-size: 30px;;
   }
    .check-overlay h3 {
-    font-size: 16px;
+    font-size: 20px;
     margin-bottom: 15px;
   }
    .check-overlay-text p {
