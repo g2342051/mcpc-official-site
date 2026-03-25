@@ -89,7 +89,7 @@ h1, h2 {
 /* ===== ハンバーガーメニューのスタイル ===== */
 .menu-trigger {
     position: absolute;
-    left: 20px; /* 左側に配置 */
+    margin-left: 20px;
     top: 50%;
     transform: translateY(-50%);
     width: 30px;
@@ -193,8 +193,8 @@ h1, h2 {
 }
 .social-links{
   position: absolute;
-  right: 16px;
-  top: 20%;
+  right: 20px;
+  top: 50%;
   transform: translateY(-50%);
   display: flex;
   gap: 30px;
@@ -206,7 +206,7 @@ h1, h2 {
 .social-links a{
   color: var(--red);
   text-decoration: none;
-  font-size: 12px;
+  font-size: 10px;
   display: inline-block;
   transition: color .3s ease, transform .3s ease;
 
