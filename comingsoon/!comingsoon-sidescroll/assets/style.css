@@ -90,7 +90,7 @@ h1, h2 {
 .menu-trigger {
     position: absolute;
     margin-left: 20px;
-    top: 50%;
+    top: 45%;
     transform: translateY(-50%);
     width: 30px;
     height: 24px;
@@ -194,7 +194,7 @@ h1, h2 {
 .social-links{
   position: absolute;
   right: 20px;
-  top: 50%;
+  top: 35%;
   transform: translateY(-50%);
   display: flex;
   gap: 30px;
@@ -206,7 +206,6 @@ h1, h2 {
 .social-links a{
   color: var(--red);
   text-decoration: none;
-  font-size: 10px;
   display: inline-block;
   transition: color .3s ease, transform .3s ease;
 
