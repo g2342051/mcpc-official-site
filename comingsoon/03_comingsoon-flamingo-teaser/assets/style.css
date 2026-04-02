@@ -827,12 +827,17 @@ RESPONRIVE DESIGN
     margin-bottom: 20px;
   }
 
-
+  .logo-sub {
+    font-size: 0.6rem;
+    letter-spacing: 1.0em;
+  }
   .starring-list {
     gap: 0.5rem 1rem;
+    font-size: 0.6rem;
   }
-  .release-main-content a {
-    padding: 1rem 2.5rem;
+  .btn-youtube {
+    padding: 0.8rem 2rem;
+    font-size: 0.8rem;
   }
 
   .panel-check {
