@@ -33,6 +33,10 @@ function assertElements() {
 
 // ローディング演出本体
 async function runLoader() {
+  const body = document.body;
+
+  body.classList.add('overflow-hidden'); // ローダー中はスクロールさせない
+  
   // 念のため最初に表示状態を整える（CSSを触ったときに事故らない用）
   elements.loader.style.display = "block";
   elements.loader.style.opacity = "1";
@@ -64,6 +68,8 @@ async function runLoader() {
   // 5) ローダー自体を消す（クリック等を邪魔しないように）
   await sleep(900);
   elements.loader.style.display = "none";
+
+  body.classList.remove('overflow-hidden'); // ローダーが終わったらスクロールを戻す
 }
 
 function setupAnimations() {
@@ -203,7 +209,7 @@ function setupSmoothScroll() {
         gsap.to(window, {
           duration: 1,        // スクロールにかかる秒数
           scrollTo: targetElement,
-          ease: "power3.inOut"  // 加減速の具合（滑らかになります）
+          ease: "power3.inOut"  // 加減速の具合
         });
       }
     });
