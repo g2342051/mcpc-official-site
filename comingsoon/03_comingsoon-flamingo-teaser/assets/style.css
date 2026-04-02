@@ -825,6 +825,15 @@ RESPONRIVE DESIGN
     line-height: 1.7;
     margin-bottom: 20px;
   }
+
+
+  .starring-list {
+    gap: 0.5rem 1rem;
+  }
+  .release-main-content a {
+    padding: 1rem 2.5rem;
+  }
+
   .panel-check {
     flex-direction: column; /* 縦並びに */
     gap: 20px;
