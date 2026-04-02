@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
     <link rel="stylesheet" href="./assets/style.css">
 
-    <!-- Google Fonts -->
+        <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Montserrat:wght@200;700&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
 
 </head>
@@ -80,38 +80,95 @@
             <img src="./assets/images/logo_red_2.svg" alt="mcpc logo">
         </div>
     </section>
+
+
+
+
+    <!-- 追加　4/2 -->
+    <!-- =========release info section ========= -->
     <section class="release-info">
-        <h2 class="reveal-item">NEW RELEASE!</h2>
-        <div id="counter_wrap">
-            <div id="counter">
+        <!-- 1. Slideshow Section -->
+        <div class="release-slideshow-wrapper">
+            <div class="release-slide active">
+                <img src="./assets/images/flamingo/flamingo-teaser-pink.jpg" alt="Teaser 1">
             </div>
-                <div>
-                    <script>let target  = new Date(2026, 3, 3, 20, 0, 0);
-                        const countdown = ()=>{const targetObj = document.getElementById("counter");
-                        const now = new Date();const differ = target.getTime() - now.getTime();if(differ < 0){targetObj.innerHTML = "キャンペーンは終了しました。";
-                        return false;};const myDay = Math.floor(differ / 1000 / 60 / 60 / 24);
-                        const myHour = Math.floor(differ / 1000 / 60 / 60 % 24);
-                        const myMin = Math.floor(differ / 1000 / 60 % 60);
-                        const mySec = Math.floor(differ / 1000 % 60);                        
-                        const myMsec= Math.floor(differ);
-                        targetObj.innerHTML = "release countdown" + "<br>" + String(myDay).padStart(2, '0') + ' days' + String(myHour).padStart(2, '0') + ' hrs' + String(myMin).padStart(2, '0') + ' min' + String(mySec).padStart(2, '0') +' sec' + "<br>";
-                        if(differ < 0){clearInterval(countdown);};};setInterval(countdown, 1);
-                    </script>
+            <div class="release-slide">
+                <img src="./assets/images/flamingo/flamingo-teaser-white.jpg" alt="Teaser 2">
+            </div>
+            <div class="release-slide">
+                <img src="./assets/images/flamingo/flamingo-teaser-starring.jpg" alt="Teaser 3">
+            </div>
+        </div>  
+        <!-- 2. Main Information Section -->
+        <div class="release-main-content">
+                <p class="mcpc-presents">mcpc PRESENTS</p>
+                <div class="logo-group">
+                    <span class="logo-main">Flamingo</span>
+                    <span class="logo-sub">DANCE VIDEO RELEASE</span>
                 </div>
-                <style>
-                    #counter{display:block;
-                    max-width:100%; 
-                    margin:0 auto; width:680px; 
-                    padding:20px 15px 20px; 
-                    color:#EC2222; 
-                    background:#000000; 
-                    text-align:center; 
-                    font-size:20px; 
-                    line-height:1.5em; 
-                    font-weight:bold;}
-                </style>
+
+            <!-- Countdown Timer -->
+            <div id="timer_area">
+                <div id="counter_container" class="timer-grid">
+                    <div class="timer-item">
+                        <span class="label">Days</span>
+                        <span id="days" class="value" style="color: var(--flamingo-pink);">00</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="label">Hours</span>
+                        <span id="hours" class="value">00</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="label">Minutes</span>
+                        <span id="minutes" class="value">00</span>
+                    </div>
+                    <div class="timer-item">
+                        <span class="label">Seconds</span>
+                        <span id="seconds" class="value">00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Finished Message -->
+            <div id="finished_msg" class="finished-msg">
+                <h2 class="finished-title">PREMIERE NOW</h2>
+                <p style="color: var(--text-dim); margin-top: 1rem; letter-spacing: 0.3em; text-transform: uppercase;">Available on YouTube</p>
+            </div>
+
+            <!-- Starring -->
+            <div class="starring-section">
+                <span class="starring-label">Starring</span>
+                <div class="starring-list">
+                    <span class="starring-name">mico</span>
+                    <span class="starring-name">Akira</span>
+                    <span class="starring-name">airi</span>
+                    <span class="starring-name">chiharu</span>
+                    <span class="starring-name">Daicho</span>
+                    <span class="starring-name">Gaffai</span>
+                    <span class="starring-name">Hachi</span>
+                    <span class="starring-name">KANA</span>
+                    <span class="starring-name">kana</span>
+                    <span class="starring-name">kyai</span>
+                    <span class="starring-name">Lea</span>
+                    <span class="starring-name">MiTo</span>
+                    <span class="starring-name">ran</span>
+                    <span class="starring-name">Ryo-ji</span>
+                    <span class="starring-name">Rua</span>
+                    <span class="starring-name">shu</span>
+                    <span class="starring-name">SOMA</span>
+                    <span class="starring-name">sora kumamoto</span>
+                    <span class="starring-name">Takuya</span>
+                    <span class="starring-name">Tsukasa</span>
+                    <span class="starring-name">Yuzuha Nakatomi</span>
+                </div>
+            </div>
+            <a href="https://www.youtube.com/@mcpc__official" target="_blank" class="btn-youtube">
+                Subscribe YouTube Channel
+            </a>
         </div>
     </section>
+
+
 
 
     <!-- ===== horizontal scroll =====-->

@@ -210,6 +210,56 @@ function setupSmoothScroll() {
   });
 }
 
+//追加 4/2
+// --- Countdown Logic ---
+function setupCountdown() { 
+        const targetDate = new Date(2026, 3, 3, 20, 0, 0);
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate.getTime() - now.getTime();
+
+            const timerArea = document.getElementById("timer_area");
+            const finishedMsg = document.getElementById("finished_msg");
+
+            if (diff <= 0) {
+                if (timerArea) timerArea.style.display = 'none';
+                if (finishedMsg) finishedMsg.style.display = 'block';
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = String(d).padStart(2, '0');
+            document.getElementById("hours").textContent = String(h).padStart(2, '0');
+            document.getElementById("minutes").textContent = String(m).padStart(2, '0');
+            document.getElementById("seconds").textContent = String(s).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+}
+function setupSlideshow() {
+// --- Slideshow Logic ---
+        const slides = document.querySelectorAll('.release-slide');
+        let currentSlide = 0;
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // 4秒ごとに切り替え
+        setInterval(nextSlide, 4000);
+}
+
+// ================================
+
+
 // --- 初期化を一か所に集約 ---
 window.addEventListener("load", async () => {
     if (!assertElements()) return;
@@ -221,5 +271,7 @@ window.addEventListener("load", async () => {
     setupHorizontalScroll();
     setupMenu();
     setupSmoothScroll();
+    setupCountdown();
+    setupSlideshow();
 });
 

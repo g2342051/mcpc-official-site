@@ -3,6 +3,11 @@
   --black:#000;
   --white:#fff;
   --gray: #9c9c9c;
+
+
+  --flamingo-pink: #FF8C82; 
+  --text-dim: rgba(255, 255, 255, 0.4);
+  --border-color: rgba(255, 255, 255, 0.1);
 }
 /* style.css */
 .overflow-hidden {
@@ -89,15 +94,181 @@ h1, h2 {
   transform: translateY(0);
 }
 
+
+
+/* ===== 追加　4/2 ===== */
+/* ===== RELEASE INFO section ===== */
 .release-info {
-  min-height: 100vh;
   background-color: var(--black);
+  padding: 1.5rem 0;
 }
+/*
 .release-info h2 {
   color: var(--red);
   text-align: center;
   padding-top: 40px;
 }
+*/
+
+/* --- Slideshow Section --- */
+.release-slideshow-wrapper {
+  width: 100%;
+  max-width: 1200px; /* PCでの最大幅 */
+  height: calc(16 / 9 * 100vw); /* 16:9 */
+  max-height: 70vh;
+  margin: 0 auto; /* 中央寄せ */
+  padding-top: 1.5rem;
+  position: relative;
+  background: var(--black);
+  overflow: hidden;
+}
+.release-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  z-index: 1;
+}
+.release-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+.release-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* --- Content Container --- */
+.release-main-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 2rem;
+  text-align: center;
+}
+.mcpc-presents {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.6em;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+.logo-group {
+  margin-bottom: 4rem;
+}
+.logo-main {
+  font-family: serif;
+  font-size: clamp(3rem, 10vw, 4.5rem);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--flamingo-pink);
+}
+.logo-sub {
+  font-size: 0.6rem;
+  letter-spacing: 1.2em;
+  color: var(--flamingo-pink);
+  font-weight: 700;
+  margin-top: 1rem;
+  text-transform: uppercase;
+  display: block;
+  text-indent: 1.2em;
+}
+
+/* --- Timer Grid --- */
+.timer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;gap: 1rem;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 3rem 0;
+  margin: 3rem 0; 
+}
+
+        .timer-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .label {
+            font-size: 0.55rem;
+            color: var(--flamingo-pink);
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .value {
+            font-family: 'JetBrains+Mono', monospace;
+            font-weight: 300;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            line-height: 1;
+            color: var(--flamingo-pink);
+        }
+
+        /* --- Starring --- */
+        .starring-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.4em;
+            color: var(--flamingo-pink);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .starring-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem 1.8rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .starring-name {
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+        }
+
+        .btn-youtube {
+            display: inline-block;
+            border: 1px solid var(--flamingo-pink);
+            color: var(--flamingo-pink);
+            margin-top: 3rem;
+            padding: 1.2rem 3.5rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.5s ease;
+        }
+        .btn-youtube:hover {
+            background-color: var(--flamingo-pink);
+            color: var(--black);
+        }
+
+        /* Finished Message */
+        .finished-msg {
+            display: none;
+            padding: 4rem 0;
+        }
+        .finished-title {
+            font-size: clamp(2rem, 8vw, 3rem);
+            font-weight: 900;
+            letter-spacing: 0.4em;
+            color: var(--flamingo-pink);
+            text-transform: uppercase;
+        }
+
+
+/* ===== 追加ここまで　4/2 ===== */
 
 /* ===== ハンバーガーメニューのスタイル ===== */
 .menu-trigger {
@@ -214,7 +385,7 @@ h1, h2 {
   list-style: none;
   margin: 0; 
   padding: 0; 
-  align-items: center; /* アイコン同士の高さも揃える */
+  align-items: center; 
 }
 .social-links a{
   color: var(--red);
