@@ -114,7 +114,7 @@ h1, h2 {
 .release-slideshow-wrapper {
   width: 100%;
   max-width: 1200px; /* PCでの最大幅 */
-  height: calc(16 / 9 * 100vw); /* 16:9 */
+  aspect-ratio: 16 / 9; /* 16:9のアスペクト比を維持 */
   max-height: 70vh;
   margin: 0 auto; /* 中央寄せ */
   padding-top: 1.5rem;
@@ -156,6 +156,13 @@ h1, h2 {
 .logo-group {
   margin-bottom: 4rem;
 }
+.logo-group img {
+  width: 400px;
+  max-width: 60vw;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
 .logo-main {
   font-family: serif;
   font-size: clamp(3rem, 10vw, 4.5rem);
@@ -248,10 +255,6 @@ h1, h2 {
             text-transform: uppercase;
             text-decoration: none;
             transition: all 0.5s ease;
-        }
-        .btn-youtube:hover {
-            background-color: var(--flamingo-pink);
-            color: var(--black);
         }
 
         /* Finished Message */
@@ -869,4 +872,6 @@ RESPONRIVE DESIGN
   .menu-trigger:hover span:nth-child(1) { background-color: var(--black); }
   .menu-trigger:hover span:nth-child(2) { background-color: var(--black); }
   .menu-trigger:hover span:nth-child(3) { background-color: var(--black); } 
+
+  .btn-youtube:hover { background-color: var(--flamingo-pink); color: var(--black); }
 }
