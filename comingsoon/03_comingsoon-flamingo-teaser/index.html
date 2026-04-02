@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="https://use.typekit.net/ldp8hkp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
     <link rel="stylesheet" href="./assets/style.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Montserrat:wght@200;700&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <div class="loader">
@@ -77,8 +81,36 @@
         </div>
     </section>
     <section class="release-info">
-        <h2>NEW RELEASE!</h2>
-        <div><img src="./assets/images/" alt=""></div>
+        <h2 class="reveal-item">NEW RELEASE!</h2>
+        <div id="counter_wrap">
+            <div id="counter">
+            </div>
+                <div>
+                    <script>let target  = new Date(2026, 3, 3, 20, 0, 0);
+                        const countdown = ()=>{const targetObj = document.getElementById("counter");
+                        const now = new Date();const differ = target.getTime() - now.getTime();if(differ < 0){targetObj.innerHTML = "キャンペーンは終了しました。";
+                        return false;};const myDay = Math.floor(differ / 1000 / 60 / 60 / 24);
+                        const myHour = Math.floor(differ / 1000 / 60 / 60 % 24);
+                        const myMin = Math.floor(differ / 1000 / 60 % 60);
+                        const mySec = Math.floor(differ / 1000 % 60);                        
+                        const myMsec= Math.floor(differ);
+                        targetObj.innerHTML = "release countdown" + "<br>" + String(myDay).padStart(2, '0') + ' days' + String(myHour).padStart(2, '0') + ' hrs' + String(myMin).padStart(2, '0') + ' min' + String(mySec).padStart(2, '0') +' sec' + "<br>";
+                        if(differ < 0){clearInterval(countdown);};};setInterval(countdown, 1);
+                    </script>
+                </div>
+                <style>
+                    #counter{display:block;
+                    max-width:100%; 
+                    margin:0 auto; width:680px; 
+                    padding:20px 15px 20px; 
+                    color:#EC2222; 
+                    background:#000000; 
+                    text-align:center; 
+                    font-size:20px; 
+                    line-height:1.5em; 
+                    font-weight:bold;}
+                </style>
+        </div>
     </section>
 
 

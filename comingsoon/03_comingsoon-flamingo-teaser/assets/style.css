@@ -6,7 +6,7 @@
 }
 /* style.css */
 .overflow-hidden {
-    overflow: hidden !important; /* 他のスタイルに負けないよう !important を推奨 */
+    overflow: hidden !important; /* 他のスタイルに負けないよう */
     height: 100%;
 }
 
@@ -19,7 +19,10 @@ body{
 }
 h1, h2 {
   margin: 0;
-  line-height: 1.1; /* 見出しは詰め気味が映える */
+  line-height: 1.1; 
+
+  font-weight: 600;
+  font-size: 50px;
 }
 
 /* Loading - Custom Split Animation */
@@ -84,6 +87,16 @@ h1, h2 {
 .hero.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.release-info {
+  min-height: 100vh;
+  background-color: var(--black);
+}
+.release-info h2 {
+  color: var(--red);
+  text-align: center;
+  padding-top: 40px;
 }
 
 /* ===== ハンバーガーメニューのスタイル ===== */
