@@ -162,7 +162,7 @@ h1, h2 {
   height: auto;
   margin-bottom: 1rem;
 }
-
+/*
 .logo-main {
   font-family: serif;
   font-size: clamp(3rem, 10vw, 4.5rem);
@@ -172,6 +172,7 @@ h1, h2 {
   line-height: 1;
   color: var(--flamingo-pink);
 }
+  */
 .logo-sub {
   font-size: 0.6rem;
   letter-spacing: 1.2em;
