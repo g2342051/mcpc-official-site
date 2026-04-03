@@ -1,5 +1,5 @@
 // ================================
-// Loader + Horizontal Scroll (GSAP)
+// Loader + Horizontal Scroll + Menu + Smooth Scroll + Countdown + Slideshow
 // ================================
 
 const elements = {
@@ -96,7 +96,6 @@ function setupHorizontalScroll() {
     const section = document.querySelector(".horizontal-section");
     if (!wrapper || !section) return;
 
-    // matchMedia (tが抜けていたのを修正)
     let mm = gsap.matchMedia();
 
     mm.add("(min-width: 1025px)", () => {
@@ -123,35 +122,6 @@ function setupHorizontalScroll() {
     });
 }
 
-//ハンバーガーメニュー処理
-//function setupMenu() {
-//    const menuTrigger = document.getElementById('menu-trigger');
-//    const navMenu = document.getElementById('nav');
-//    const body = document.body; // body要素を取得
-
-//    if (menuTrigger && navMenu) {
-//        menuTrigger.addEventListener('click', () => {
-//            menuTrigger.classList.toggle('active');
-//            navMenu.classList.toggle('active');
-            
-//            // --- ここを追加 ---
-//            // メニューが開いている（activeクラスがある）ときだけクラスを付与
-//            body.classList.toggle('overflow-hidden');
-//        });
-
-//        navMenu.querySelectorAll('a').forEach(link => {
- //           link.addEventListener('click', () => {
-//                menuTrigger.classList.remove('active');
-//                navMenu.classList.remove('active');
-                
-                // --- ここを追加 ---
-                // リンクをクリックしてメニューが閉じたらスクロールを戻す
-//                body.classList.remove('overflow-hidden');
-//            });
-//        });
-//      }
-//}
-
 // ハンバーガーメニューのセットアップ
 function setupMenu() {
     const menuTrigger = document.getElementById('menu-trigger');
@@ -175,26 +145,6 @@ function setupMenu() {
     });
 }
 
-
-// ここが無いとローダーは動きません
-//window.addEventListener("load", async () => {
-//  if (!assertElements()) return;
-
-//  try {
-//    await runLoader();
-//  } catch (e) {
-//    console.error("[loader] error:", e);
-    // 失敗しても黒画面固定は回避
-//    if (elements.loader) elements.loader.style.display = "none";
-//  }
-
-//  setupHorizontalScroll();
-//});
-
-
-
-
-
 // スムーズスクロール設定（GSAP ScrollToPlugin使用）
 function setupSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -207,7 +157,7 @@ function setupSmoothScroll() {
       if (targetElement) {
         // GSAPを使ってターゲットまでスクロール
         gsap.to(window, {
-          duration: 1,        // スクロールにかかる秒数
+          duration: 1, 
           scrollTo: targetElement,
           ease: "power3.inOut"  // 加減速の具合
         });
