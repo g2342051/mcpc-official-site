@@ -1,0 +1,913 @@
+@import "tailwindcss";
+
+/* もし元の index.html で使っていた独自の CSS があれば、この下に追記してください */
+
+:root{
+  --red:#ec2222;
+  --black:#000;
+  --white:#fff;
+  --gray: #9c9c9c;
+
+  --flamingo-pink: #FF8C82; 
+  --text-dim: rgba(255, 255, 255, 0.4);
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+/* style.css */
+.overflow-hidden {
+    overflow: hidden !important; /* 他のスタイルに負けないよう */
+    height: 100%;
+}
+
+/* ===== GLOBAL STYLES ===== */
+body{
+  font-family:"tt-commons-pro", sans-serif;
+  background: var(--white);
+  color: var(--black);
+  overflow-x: hidden;
+}
+h1, h2 {
+  margin: 0;
+  line-height: 1.1; 
+
+  font-weight: 600;
+  font-size: 50px;
+}
+
+/* Loading - Custom Split Animation */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+.loader-panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--black);
+  transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+}
+.panel-top { top: 0; }
+.panel-bottom { bottom: 0; }
+.logo-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 110;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+/* Center Line Animation */
+.loader-line {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--white);
+  z-index: 120;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.logo-container img{
+  width: 250px;
+  max-width: 70vw;
+  height: auto;
+}
+
+/* ===== HERO ===== */
+.hero{
+  min-height: 100vh;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* header / logo / arrow */
+
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  transition-delay: 0.3s; /* パネルが割れ始めてから少し遅れて開始 */
+}
+/* このクラスがJSで付与されたら表示される */
+.hero.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== ハンバーガーメニューのスタイル ===== */
+.menu-trigger {
+    position: absolute;
+    margin-left: 20px;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    display: block; /* スマホ・タブレットで表示 */
+  }
+  .menu-trigger span {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: var(--red);
+    border-radius: 4px;
+    transition: background-color .6s ease;
+  }
+  /* 初期の配置 */
+  .menu-trigger span:nth-child(1) { top: 0; }
+  .menu-trigger span:nth-child(2) { top: 11px; }
+  .menu-trigger span:nth-child(3) { bottom: 0; }
+
+  /* 開くとき（activeが付与されたとき）のアニメーション */
+  .menu-trigger.active span:nth-child(1) { animation: menu-bar01-open .75s forwards; }
+  .menu-trigger.active span:nth-child(2) { opacity: 0; transition: opacity .2s ease; }
+  .menu-trigger.active span:nth-child(3) { animation: menu-bar03-open .75s forwards; }
+
+  /*  閉じるとき（activeが外れたとき）のアニメーション */
+  .menu-trigger:not(.active) span:nth-child(1) { animation: menu-bar01-rev .75s forwards; }
+  .menu-trigger:not(.active) span:nth-child(2) { transition: opacity .25s .25s, background-color .6s ease; opacity: 1; }
+  .menu-trigger:not(.active) span:nth-child(3) { animation: menu-bar03-rev .75s forwards; }
+
+  /* --- アニメーションの定義 --- */
+  /* 1本目: 中央へ移動して45度回転 */
+  @keyframes menu-bar01-open {
+    0%    { transform: translateY(0) rotate(0); }
+    50%   { transform: translateY(11px) rotate(0); }
+    100%  { transform: translateY(11px) rotate(45deg); }
+  }
+  /* 1本目戻る　45度から水平に戻って上へ */
+  @keyframes menu-bar01-rev {
+    0%    { transform: translateY(11px) rotate(45deg); }
+    50%   { transform: translateY(11px) rotate(0); }
+    100%  { transform: translateY(0) rotate(0); }
+  }
+  /* 3本目: 中央へ移動して-45度回転 */
+  @keyframes menu-bar03-open {
+    0%    { transform: translateY(0) rotate(0); }
+    50%   { transform: translateY(-11px) rotate(0); }
+    100%  { transform: translateY(-11px) rotate(-45deg); }
+  }
+  /* 3本目戻る　-45度から水平に戻って下へ */
+  @keyframes menu-bar03-rev {
+    0%    { transform: translateY(-11px) rotate(-45deg); }
+    50%   { transform: translateY(-11px) rotate(0); }
+    100%  { transform: translateY(0) rotate(0); }
+  }
+
+/* ===== NAVIGATION ===== */
+.header{
+  top: 0;
+  z-index: 10;
+  background: var(--white);
+  backdrop-filter: blur(6px);
+  height: 56px;
+  position: relative; /* ← これ重要 */
+}
+.nav{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+.nav-links{
+  display: flex;
+  gap: 50px;
+  list-style: none;
+}
+.nav-links a{
+  position: relative;
+  color: var(--red);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bolder;
+  letter-spacing: .12em;
+  text-align: center;
+  transition: color .3s ease;
+}
+.nav-links a::after{
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--black);
+  transition: width .3s ease;
+}
+.social-links{
+  position: absolute;
+  right: 20px;
+  top: 35%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  margin: 0; 
+  padding: 0; 
+  align-items: center; 
+}
+.social-links a{
+  color: var(--red);
+  text-decoration: none;
+  display: inline-block;
+  transition: color .3s ease, transform .3s ease;
+
+  line-height: 1; /* 行の高さをリセットして中央に寄せやすくする */
+  align-items: center; /* アイコンを縦方向に中央揃え */
+  justify-content: center; /* アイコンを横方向に中央揃え */
+}
+
+.hero-image img{
+  width: 300px;
+  max-width: 70vw;
+  height: auto;
+}
+.hero-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo-horizontal{
+  width: 70px;
+  opacity: 0.9;
+  margin: 0 auto;
+  color: var(--black);
+}
+
+/* ===== 追加　4/3 ===== */
+/* WHAT'S NEW Link */
+.whats-new-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 80px;
+}
+.whats-new-link {
+  text-decoration: none;
+  color: var(--red);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 0.3s ease;
+  transition: transform 0.3s ease;
+}
+.whats-new-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.2rem;
+  animation: arrow-bounce 2s infinite;
+}
+.whats-new-arrow {
+  font-size: 1.8rem;
+  animation: arrow-bounce 2s infinite;
+}
+@keyframes arrow-bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+/* ===== RELEASE INFO section ===== */
+.release-info {
+  background-color: var(--black);
+  padding: 0 4.0rem;
+}
+
+/* --- Content Container --- */
+.release-main-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4.0rem 0;
+  text-align: center;
+}
+.mcpc-presents {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+.logo-group {
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.logo-group img {
+  width: 400px;
+  max-width: 60vw;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
+.logo-sub {
+  font-size: 0.8rem;
+  letter-spacing: 1.2em;
+  color: var(--flamingo-pink);
+  font-weight: 500;
+  text-transform: uppercase;
+  display: block;
+  text-indent: 1.2em;
+}
+.video-container {
+  width: 100%;            /* 親要素の幅いっぱいに広げる */
+  max-width: 700px;       /* 大きくなりすぎないよう制限（お好みで） */
+  margin: 0 auto;         /* 中央寄せ */
+}
+.video-container iframe {
+  width: 100%;            /* 横幅をコンテナに合わせる */
+  height: auto;           /* 高さは自動計算 */
+  aspect-ratio: 16 / 9;   /* ★ここが重要！常に16:9を維持する */
+}
+
+/* --- Starring --- */
+.starring-label {
+  font-size: 1.0rem;
+  letter-spacing: 0.4em;
+  color: var(--flamingo-pink);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+.starring-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem 1.8rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.starring-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+}
+
+.btn-youtube {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--flamingo-pink);
+  color: var(--flamingo-pink);
+  margin-top: 3rem;
+  padding: 1.2rem 3.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.5s ease;
+}
+.btn-youtube i {
+  font-size: 1.2rem;
+}
+/* ===== 追加ここまで　4/2 ===== */
+
+
+/* ================ 
+
+CONTENT 
+
+=================== */
+/* 共通 */
+.horizontal-section {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.inner-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 150vw;
+  will-change: transform;
+}
+
+.panel {
+  display: flex;
+  width: 50vw;
+  height: 100vh;
+  flex-shrink: 0;
+  color: var(--black);
+}
+.comingsoon-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.comingsoon-title span:nth-child(1) {
+  font-weight: 600;
+  font-size: 4.0rem;
+  margin-top: 20px;
+}
+.comingsoon-title span:nth-child(2) {
+  font-weight: 600;
+  font-size: 2.5rem;
+  margin-bottom: 1.0rem;
+}
+.comingsoon-text p {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  padding: 0 0 20px 0;
+  line-height: 2.0;
+  font-weight: 100;
+}
+
+/* パネル1: Intro (赤背景) */
+.panel-intro{
+  width: 50vw;
+  height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+  background-color: var(--red);
+
+  /* --- 上下左右中央揃えの設定 --- */
+  display: flex;
+  flex-direction: column;   /* 子要素を縦に並べる */
+  justify-content: center;  /* 垂直方向（上下）の中央揃え */
+  align-items: center;      /* 水平方向（左右）の中央揃え */
+  text-align: center;
+}
+
+.intro-social-links {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.intro-social-links ul{
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  padding: 0;
+  margin-top: 10px;
+}
+.intro-social-links a{
+  color: var(--white);
+  text-decoration: none;
+  display: inline-block;
+  transition: color .3s ease, transform .3s ease;
+}
+
+/* パネル2: Key Visual (写真) */
+.panel-kv {
+  width: 50vw; /* 右半分 */
+  height: 100vh;
+  overflow: hidden;
+}
+.panel-kv img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 画像を隙間なく表示 */
+}
+
+/* パネル3: Check It (赤背景) */
+.panel-check{
+  width: 50vw; /* 左半分 */
+  height: 100vh;
+  background-color: var(--black);
+  padding: 40px;
+  gap: 30px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+
+  align-items: center;    /* 上下中央 */
+  justify-content: center; /* 左右中央 */
+}
+.event-kv {
+  width: 50%; 
+  object-fit: cover;
+}
+.event-kv img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 画像を隙間なく表示 */
+}
+
+/* 文字を右上に絶対配置で重ねる */
+.check-overlay {
+    transform: translateY(-50%);
+    color: var(--white);
+    text-align: left;
+    z-index: 10;
+    width: 50%; 
+                   /* 重なり具合の調整 */
+}
+.check-overlay h2 {
+    width: 140%; 
+    line-height: 1.0;
+    font-size: 50px;
+    font-weight: 600;
+    margin: 0;
+    margin-left: -15%;
+}
+/*
+.check-overlay h3 {
+    margin-bottom: 30px;
+    font-size: 30px;
+    line-height: 1.0;
+}
+*/
+.check-overlay-text p {
+    font-size: 1.4rem;
+    font-weight: 200;
+    line-height: 1.6;
+}
+.check-overlay-text p strong {
+  display: inline-block;
+  padding: 0 10px;
+    font-size: 1.8rem;
+    background-color: var(--white);
+    color: var(--black);
+    width: auto;
+
+    line-height: 1.2;
+}
+.check-overlay-text a:not(.check-btn) {
+  display: inline-block;
+  color: var(--black);
+  background-color: var(--white);
+  padding: 0 10px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.check-btn-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+.check-btn {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 0;
+  color: var(--white);
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  position: relative;
+
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+.check-btn i {
+  transition: transform 0.3s ease;
+  margin-right: 6px;
+  font-size: 1.3rem;
+}
+.check-btn-text {
+  position: relative;
+  display: inline-block;
+}
+/* ボタンの下線を擬似要素で作成 共通スタイル*/
+.check-btn-text::after{
+  content: "";
+  position: absolute;
+  bottom: -2.0px;
+  width: 100%;
+  left: 0;
+  height: 1.0px;
+  background-color: var(--gray);
+
+  transform: scale(0, 1);
+  transform-origin: right top;
+  transition: transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)/* アニメーションのイージングを調整 */;
+}
+
+/* アニメーション用クラス */
+/* 最初は透明で下にずらしておく */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.spacer {
+  display: block;
+  margin-bottom: 25px; /* 行間を空けるためのスペーサークラス */
+}
+
+
+/* ========================
+RESPONRIVE DESIGN 
+========================= */
+/* ちょっと小さくなったときの調整 */
+@media (max-width: 1240px) {
+  .nav-links{
+    gap: 20px;
+  }
+  .nav-links a{
+    font-size: 13px;
+  }
+  .social-links{
+    gap: 20px;
+  }
+  .social-links a{
+    font-size: 13px;
+  }
+  .hero img{
+    width: 300px;
+  }
+  .logo-horizontal{
+    width: 60px;
+  }
+
+  .comingsoon-title span:nth-child(1) {
+    font-size: 3.5rem;
+    margin-top: 25px;
+  }
+  .comingsoon-title span:nth-child(2) {
+    font-size: 2.5rem;
+  }
+  .panel p {
+    font-size: 0.90rem;
+    line-height: 1.7;
+  }
+  .panel-intro{
+    height: auto;
+    padding: 30px;
+  }
+  .panel-kv {
+    height: auto;
+  }
+  .panel-check {
+    height: auto;
+
+  }
+  .check-overlay h2 {
+    font-size: 35px;
+      margin-left: -20%;
+  }
+  .check-overlay h3 {
+    font-size: 19px;
+  } 
+  .check-overlay-text p {
+    font-size: 15px;
+  }
+  .check-overlay-text p strong {
+    font-size: 20px;
+    padding: 0 5px;
+  }
+}
+
+/* タブレットサイズ以下でのレイアウト変更 */
+@media (max-width: 1024px) {
+  /* 横スクロールを解除して縦スクロールに切り替える */
+  .horizontal-section {
+    height: auto !important; /* 高さを自動にして縦スクロールに対応 */
+    overflow: visible !important;/* 横スクロールを解除 */
+  }
+
+  .inner-wrapper {
+    display: block !important; /* 横並びから縦並びに切り替え */
+    width: 100% !important; /* 横幅を100%に */
+      height: auto !important; /* コンテンツ量に応じて高さを可変に */
+      transform: none !important; /* 横スクロールのtransformを解除 */
+  }
+  /* --- ナビゲーションを全画面メニューにする --- */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: -100%; /* 最初は画面の外に隠す */
+    width: 100%;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    transition: all 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 90;
+    transform: none; /* pc用の中央揃えを解除 */
+  }
+  .nav.active {
+    left: 0; /* クラスがついたら画面内へ */
+  }
+  .nav-links {
+    flex-direction: column; /* 縦並び */
+    gap: 40px;
+    text-align: center;
+  }
+  .nav-links a {
+    font-size: 20px; /* スマホでは少し大きく */
+  }
+  /* ソーシャルリンクはそのまま右上に（微調整が必要ならここで） */
+  .social-links {
+    right: 20px;
+  }
+  /* 全体コンテナを縦並びに */
+  .panel {
+    width: 100% !important; /* 横幅を100%に */
+    height: auto !important; /* 高さを自動に */
+    flex-shrink: 1 !important; /* 縮小を許可 */
+  }
+  /* テキストエリア（上半分） */
+  .panel-intro {
+    width: 100%;
+    min-height: 55vh; /* iPadの画面内で適度な高さを確保 */
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  /* キービジュアルエリア（下半分） */
+  .panel-kv {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: var(--white); /* 余白の色を背景に合わせる */
+  }
+  .panel-kv img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain; /* 写真の端が切れるのを完全に防ぐ */
+  }
+
+  .comingsoon-title span:nth-child(1) {
+    font-size: 4.5rem; /* SPRING 2026 */
+    margin-bottom: 0;
+  }
+  .comingsoon-title span:nth-child(2) {
+    font-size: 3.0rem; /* COMING SOON */
+    margin-top: 0;
+  }
+  .comingsoon-text p {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* チェックイットのレイアウト調整 */
+  .panel-check {
+    width: 100%;
+   height: auto;
+    padding: 30px 20px;
+    height: auto; /* 高さを自動に */
+    line-height: 1.0; /* 行間を詰める */
+    justify-content: center;
+     
+  }
+  .event-kv {
+    width: 45%;
+    height: auto;
+    margin-bottom: 30px; /* テキストとの間にスペース */
+  }
+   .check-overlay {
+    width: 55%; /* 横幅を100%に */
+    transform: none; /* 位置調整を解除 */
+   }
+    .check-overlay h2 {
+      width: 120%; 
+      margin-left: -15%; 
+      font-size: 40px;
+    }
+    /*
+    .check-overlay h3 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    */
+     .check-overlay-text p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+     .check-overlay-text p strong {
+      font-size: 24px;
+      padding: 0 5px;
+     }
+}
+
+/* 1025px以上（PC）ではボタンを隠す */
+@media (min-width: 1025px) {
+    .menu-trigger {
+        display: none;
+    }
+}
+
+/* ===== スマホ用 ===== */
+@media (max-width: 480px) {
+  .hero img{
+    width: 200px;
+  }
+  .logo-container img{
+    width: 200px;
+  }
+  .panel-intro p{
+    font-size: 10px;
+    padding: 0 20px 0 20px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .release-info {
+    padding: 0 2.0rem;
+  }
+  .logo-sub {
+    font-size: 0.6rem;
+    letter-spacing: 1.0em;
+    margin-top: 0.5rem;
+  }
+  .starring-label {
+    letter-spacing: 0.3em;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  } 
+  .starring-list {
+    gap: 0.2rem 0.75rem;
+    font-size: 0.6rem;
+  }
+  .btn-youtube {
+    padding: 0.8rem 1.0rem;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    gap: 5px;
+  }
+
+  .comingsoon-title span:nth-child(1) {
+    font-size: 2.5rem; /* SPRING 2026 */
+    margin-bottom: 0;
+  }
+  .comingsoon-title span:nth-child(2) {
+    font-size: 1.7rem; /* COMING SOON */
+    margin-top: 0;
+  }
+
+  .panel-check {
+    flex-direction: column; /* 縦並びに */
+    gap: 20px;
+  }
+
+
+
+  .event-kv {
+    width: 80%;
+    height: auto;
+  }
+  .check-overlay {
+    width: 100%;
+    text-align: center;
+    transform: none;
+  }
+  .check-overlay h2 {
+    width: 100%;
+    margin: 0;
+    font-size: 30px;;
+  }
+   .check-overlay h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+   .check-overlay-text p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+   .check-overlay-text p strong {
+    font-size: 18px;
+    padding: 0 5px;
+   }
+   .check-btn{
+    font-size: 1.0rem;
+    justify-content: center;
+   }
+   .check-btn i {
+    font-size: 1.0rem;
+   }
+  .check-btn-wrapper {
+    justify-content: center; /* ボタンを中央に */
+  }
+    
+}
+
+/* Hover: Only apply to devices that support real hover */
+@media (hover: hover) {
+  .nav-links a:hover { color: var(--black); }
+  .nav-links a:hover::after { width: 100%; }
+  .social-links a:hover { transform: scale(1.08); color: var(--black); }
+  .intro-social-links a:hover { color: var(--black); transform: scale(1.2); }
+
+  .whats-new-link:hover { transform: scale(1.08); }
+
+  .check-btn:hover { color: var(--gray); } 
+  .check-btn:hover .check-btn-text::after {transform-origin: left top; transform: scale(1, 1);}
+
+  .menu-trigger:hover span:nth-child(1) { background-color: var(--black); }
+  .menu-trigger:hover span:nth-child(2) { background-color: var(--black); }
+  .menu-trigger:hover span:nth-child(3) { background-color: var(--black); } 
+
+  .check-overlay-text a:hover:not(.check-btn) { background-color: var(--gray); color: var(--black); }  
+
+  .btn-youtube:hover { background-color: var(--flamingo-pink); color: var(--black); }
+}
